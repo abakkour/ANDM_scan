@@ -16,6 +16,10 @@ function food_rating(subjectID,run,use_eyetracker)
 
 outputPath = ['../data/', subjectID];
 
+if exist(outputPath,'dir')==0
+    mkdir(outputPath)
+end
+
 % essential for randomization
 rng('shuffle');
 
@@ -299,8 +303,8 @@ for trialNum = 1:length(shuff_names)   % To cover all the items in one run.
     % integers less than or equal to A
     WaitSecs(0.001);
     
-    Eyelink('Message', '!V IAREA ELLIPSE %d %d %d %d %d %s', 1, floor(width/2)-200, floor(height/2)-200, floor(width/2)+200, floor(height/2)+200,'food');
-    Eyelink('Message', '!V IAREA ELLIPSE %d %d %d %d %d %s', 1, floor(width/2)-220, floor(height/2)-420, floor(width/2)+220, floor(height/2)-330,'scale');
+    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, floor(width/2)-200, floor(height/2)-200, floor(width/2)+200, floor(height/2)+200,'food');
+    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, floor(width/2)-220, floor(height/2)+330, floor(width/2)+220, floor(height/2)+420,'scale');
     
     % Send messages to report trial condition information
     % Each message may be a pair of trial condition variable and its
@@ -455,7 +459,7 @@ Screen('CloseAll');
 ListenChar(0);
 
 if dummymode==0
-    movefile(edfFile,strcat(outputPath, '/', subjectID,'_food_rating_run', sprintf('%02d',runNum),'_', timestamp,'.edf'));
+    movefile(edfFile,strcat(outputPath, '/', subjectID,'_food_rating_run', sprintf('%02d',run),'_', timestamp,'.edf'));
 end
 
 end

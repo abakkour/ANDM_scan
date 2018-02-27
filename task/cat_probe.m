@@ -92,9 +92,9 @@ sizeFactor = 1;
 %% 'INITIALIZE Screen variables'
 %==============================================
 Screen('Preference', 'VisualDebuglevel', 0); %No PTB intro screen
-Screen('Preference', 'SkipSyncTests', 1); %ONLY FOR TESTING
-PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
-Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
+%Screen('Preference', 'SkipSyncTests', 1); %ONLY FOR TESTING
+%PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
+%Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
 
 screennum = min(Screen('Screens'));
 
@@ -106,7 +106,7 @@ ListenChar(2);
 
 % Define Colors
 % - - - - - - - - - - - - - - -
-black = BlackIndex(w); % Should equal 0.
+%black = BlackIndex(w); % Should equal 0.
 white = WhiteIndex(w); % Should equal 255.
 green = [0 255 0];
 gray = [128 128 128];
@@ -153,12 +153,12 @@ end
 %   'read in sorted file'
 % - - - - - - - - - - - - - - - - -
 
-file = dir([outputPath subjectID '_food_choice_stim.txt']);
+file = dir([outputPath subjectID '_cat_stopGoList_trainingstim.txt']);
 fid = fopen([outputPath sprintf(file(length(file)).name)]);
-data = textscan(fid, '%s %d %f %d');% these contain everything from the sortbdm
+data = textscan(fid, '%s %d %d %f %d');% these contain everything from the sortbdm
 stimName = data{1};
-bidIndex = data{2};
-bidValue = data{3};
+%bidIndex = data{3};
+bidValue = data{4};
 fclose(fid);
 
 
@@ -166,7 +166,7 @@ fclose(fid);
 % - - - - - - - - - - - - - - -
 Images = cell(1,length(stimName));
 for i = 1:length(stimName)
-    Images{i} = imread([mainPath sprintf('/../stim/foodchoice/%s',stimName{i})]);
+    Images{i} = imread([mainPath sprintf('/../stim/cat/%s',stimName{i})]);
 end
 
 % Define image scale - Change according to your stimuli
@@ -460,7 +460,7 @@ for trial = 1:trialsPerRun
     
     Eyelink('Message', '!V TRIAL_VAR trial %d', trial);
     Eyelink('Message', '!V TRIAL_VAR PairType %s', num2str(pairType(trial)));
-    Eyelink('Message', '!V TRIAL_VAR LeftIsGo %d', leftGo(trial));
+    Eyelink('Message', '!V TRIAL_VAR LeftIsGo %s', num2str(leftGo(trial)));
     
     %-----------------------------------------------------------------
     % display images
@@ -477,12 +477,11 @@ for trial = 1:trialsPerRun
     
     CenterText(w,'+', white,0,0);
     StimOnset = Screen(w,'Flip', runStart+onsetlist(runtrial));
-    
     % write out a message to indicate the time of the picture onset
     % this message can be used to create an interest period in EyeLink
     % Data Viewer
     Eyelink('Message', 'SYNCTIME');
-    Eyelink('Message', eyelink_message);
+    Eyelink('Message', eyelink_message);   
     
     error=Eyelink('CheckRecording');
     if(error~=0)
@@ -550,6 +549,11 @@ for trial = 1:trialsPerRun
     end
     
     if goodresp==1
+        
+        Eyelink('Message',['run: ',num2str(run),', trial: ',num2str(trial),', Feedback_time: ',num2str(onsetlist(trial)+respTime)]);
+        Eyelink('Message', 'TRIAL OK');
+        Eyelink('Message', 'TRIAL_RESULT %d', pressed);
+        
         if leftGo(trial)==1
             Screen('PutImage',w,Images{stimnum1(trial)}, leftRect);
             Screen('PutImage',w,Images{stimnum2(trial)}, rightRect);
@@ -566,22 +570,18 @@ for trial = 1:trialsPerRun
                 Screen('FrameRect', w, green, rightRect, penWidth);
                 pressed=1;
         end
-        
         CenterText(w,'+', white,0,0);
-        feedbacktime=Screen(w,'Flip',runStart+onsetlist(trial)+respTime);
-        Eyelink('Message',['run: ',num2str(run),', trial: ',num2str(trial),', Feedback_time: ',num2str(feedbacktime-runStart)]);
-        Eyelink('Message', 'TRIAL OK');
-        Eyelink('Message', 'TRIAL_RESULT %d', pressed);
+        Screen(w,'Flip',runStart+onsetlist(trial)+respTime);
 
     else
-        %         Screen('DrawText', w, 'You must respond faster!', xcenter-400, ycenter, white);
-        CenterText(w,sprintf('You must respond faster!') ,white,0,0);
-        responfastertime=Screen(w,'Flip',runStart+onsetlist(runtrial)+respTime);
-
+        
         %   Eyelink MSG
         % ---------------------------
-        Eyelink('Message',['run: ',num2str(run),', trial: ',num2str(trial),', Respond_faster_time: ',num2str(responfastertime-runStart)]);
+        Eyelink('Message',['run: ',num2str(run),', trial: ',num2str(trial),', Respond_faster_time: ',num2str(onsetlist(runtrial)+respTime)]);
         Eyelink('Message', 'TRIAL_RESULT 0');
+        
+        CenterText(w,sprintf('You must respond faster!') ,white,0,0);
+        Screen(w,'Flip',runStart+onsetlist(runtrial)+respTime);
 
     end % end if goodresp==1
     
@@ -674,7 +674,7 @@ outfile = strcat(outputPath,'/', sprintf('%s_cat_probe_run_%2d_%s.mat',subjectID
 run_info.subject=subjectID;
 run_info.date=date;
 run_info.outfile=outfile;
-run_info.script_name=mfilename;
+run_info.script_name=mfilename; %#ok<STRNU>
 clear Images;
 save(outfile);
 

@@ -81,9 +81,9 @@ afterrunfixation = 4;
 % -----------------------------------------------
 
 Screen('Preference', 'VisualDebuglevel', 0); %No PTB intro screen
-PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
-Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
-Screen('Preference', 'SkipSyncTests', 1); %FOR TESTING ONLY
+%PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
+%Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
+%Screen('Preference', 'SkipSyncTests', 1); %FOR TESTING ONLY
 
 screennum = min(Screen('Screens'));
 
@@ -706,8 +706,6 @@ for trialNum = 1:length(shuff_trialType{runNum})   % To cover all the items in o
             end % end if pressed && noresp
         end %evaluate trial_type
         
-        
-        
     end %%% End big while waiting for response within 1000 msec
     
     
@@ -721,18 +719,19 @@ for trialNum = 1:length(shuff_trialType{runNum})   % To cover all the items in o
         PsychPortAudio('FillBuffer', pahandle, wave);
     end
     
-    %   Show fixation
-    %---------------------------
-    CenterText(w,'+', white,0,0);
-    Screen('TextSize',w, 60);
-    fix_time{runNum}(trialNum,1) = Screen(w,'Flip', image_start_time+image_duration);
-    
     %   Eyelink MSG
     % ---------------------------
     Eyelink('Message', ['run: ',num2str(runNum),' trial: ' num2str(trialNum) ' Fixation_ITI_start: ',num2str(fix_time{runNum}(trialNum,1)-image_start_time)]); % mark ITI time in file
     Eyelink('Message', 'TRIAL OK');
     Eyelink('Message', 'TRIAL_RESULT 0');
     
+    %   Show fixation
+    %---------------------------
+    CenterText(w,'+', white,0,0);
+    Screen('TextSize',w, 60);
+    fix_time{runNum}(trialNum,1) = Screen(w,'Flip', image_start_time+image_duration);
+    
+   
     if noresp == 1
         %---------------------------
         % these are additional 500msec to monitor responses

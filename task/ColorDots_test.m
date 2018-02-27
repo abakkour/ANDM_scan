@@ -497,13 +497,13 @@ Eyelink('ShutDown');
 % ------------------------------
 if run == 1 || run == 2 % if this is not the last run
     
-    Screen('TextSize', w, 40); %Set textsize
+    Screen('TextSize', win, 40); %Set textsize
     CenterText(w,sprintf('Another run will begin soon'), white, 0,-300);
-    Screen('Flip',w);
+    Screen('Flip',win);
 else % if this is the last run
     CenterText(w,'Great Job. Thank you!', white, 0,-270);
     CenterText(w,'Now we will continue to the next part', white, 0, -180);
-    Screen('Flip',w);
+    Screen('Flip',win);
 end
 
 WaitSecs(4);

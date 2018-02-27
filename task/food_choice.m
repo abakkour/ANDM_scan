@@ -57,10 +57,10 @@ rng('shuffle')
 % Get input args and check if input is ok
 % =========================================================================
 
-sessionNum=1;
+%sessionNum=1;
 
 trialsPerRun = 70; %70 trials per run x 3 runs = 210 trials total
-numRunsPerBlock = 1;
+%numRunsPerBlock = 1;
 
 % =========================================================================
 % set the computer and path
@@ -95,9 +95,9 @@ sizeFactor = 1;
 %% 'INITIALIZE Screen variables'
 %==============================================
 Screen('Preference', 'VisualDebuglevel', 0); %No PTB intro screen
-Screen('Preference', 'SkipSyncTests', 1); %ONLY FOR TESTING
-PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
-Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
+%Screen('Preference', 'SkipSyncTests', 1); %ONLY FOR TESTING
+%PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
+%Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
 
 screennum = min(Screen('Screens'));
 
@@ -109,7 +109,7 @@ HideCursor;
 
 % Define Colors
 % - - - - - - - - - - - - - - -
-black = BlackIndex(w); % Should equal 0.
+%black = BlackIndex(w); % Should equal 0.
 white = WhiteIndex(w); % Should equal 255.
 green = [0 255 0];
 gray=[128 128 128];
@@ -564,6 +564,9 @@ for trial = 1:trialsPerRun
     end
     
     if goodresp==1
+        Eyelink('Message',['run: ',num2str(numRun),', trial: ',num2str(trial),', Feedback_time: ',num2str(onsetlist(trial)+respTime)]);
+        Eyelink('Message', 'TRIAL OK');
+        Eyelink('Message', 'TRIAL_RESULT %d', pressed);
         
         Screen('PutImage',w,Images{stimnum1(trial)}, leftRect);
         Screen('PutImage',w,Images{stimnum2(trial)}, rightRect);
@@ -578,20 +581,16 @@ for trial = 1:trialsPerRun
         end
         
         CenterText(w,'+', white,0,0);
-        feedbacktime=Screen(w,'Flip',runStart+onsetlist(trial)+respTime);
-        Eyelink('Message',['run: ',num2str(numRun),', trial: ',num2str(trial),', Feedback_time: ',num2str(feedbacktime-runStart)]);
-        Eyelink('Message', 'TRIAL OK');
-        Eyelink('Message', 'TRIAL_RESULT %d', pressed);
-        
+        Screen(w,'Flip',runStart+onsetlist(trial)+respTime);
+
     else
+        %   Eyelink MSG
+        % ---------------------------
+        Eyelink('Message',['run: ',num2str(numRun),', trial: ',num2str(trial),', Respond_faster_time: ',num2str(responfastertime-runStart)]);
+        Eyelink('Message', 'TRIAL_RESULT 0');
         %         Screen('DrawText', w, 'You must respond faster!', xcenter-400, ycenter, white);
         CenterText(w,sprintf('You must respond faster!') ,white,0,0);
         responfastertime=Screen(w,'Flip',runStart+onsetlist(runtrial)+respTime);
-
-        %   Eyelink MSG
-        % ---------------------------
-        Eyelink('Message',['run: ',num2str(run),', trial: ',num2str(trial),', Respond_faster_time: ',num2str(responfastertime-runStart)]);
-        Eyelink('Message', 'TRIAL_RESULT 0');
     end % end if goodresp==1
     
     %-----------------------------------------------------------------
@@ -601,7 +600,7 @@ for trial = 1:trialsPerRun
     CenterText(w,'+', white,0,0);
     Screen(w,'Flip',runStart+onsetlist(runtrial)+respTime+.5);
     fixationTime(trial) = GetSecs - runStart;
-    
+
     %   Eyelink MSG
     % ---------------------------
     Eyelink('Message',['run: ',num2str(numRun),' trial: ',num2str(trial),' Fixation_ITI_time: ',num2str(fixationTime(trial)-runStart)]);
@@ -672,7 +671,7 @@ outfile = strcat(outputPath,'/', sprintf('%s_food_choice_run_%2d_%s.mat',subject
 run_info.subject=subjectID;
 run_info.date=date;
 run_info.outfile=outfile;
-run_info.script_name=mfilename;
+run_info.script_name=mfilename; %#ok<STRNU>
 clear Images;
 save(outfile);
 

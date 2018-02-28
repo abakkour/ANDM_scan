@@ -468,8 +468,8 @@ for trial = 1:trialsPerRun
     WaitSecs(0.001);
     
     Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, midRect(1),midRect(2),midRect(3),midRect(4),'fixation');
-    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, leftRect(1),leftRect(2),leftRect(3),leftRect(4),'center');
-    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, rightRect(1),rightRect(2),rightRect(3),rightRect(4),'center');
+    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, leftRect(1),leftRect(2),leftRect(3),leftRect(4),'left');
+    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, rightRect(1),rightRect(2),rightRect(3),rightRect(4),'right');
     
     % Send messages to report trial condition information
     % Each message may be a pair of trial condition variable and its
@@ -489,11 +489,12 @@ for trial = 1:trialsPerRun
     CenterText(w,'+', white,0,0);
     StimOnset = Screen(w,'Flip', runStart+onsetlist(runtrial));
 
-    eyelink_message=['run: ' num2str(numRun),' trial: ',num2str(trial) ', StimLeft: ' stimName{stimnum1(trial)} ', StimRight: ' stimName{stimnum2(trial)} ', time: ',num2str(StimOnset-runStart)];
     % write out a message to indicate the time of the picture onset
     % this message can be used to create an interest period in EyeLink
     % Data Viewer
     Eyelink('Message', 'SYNCTIME');
+    Eyelink('Message', 'DISPLAY ON');
+    eyelink_message=['run: ' num2str(numRun),' trial: ',num2str(trial) ', StimLeft: ' stimName{stimnum1(trial)} ', StimRight: ' stimName{stimnum2(trial)} ', time: ',num2str(StimOnset-runStart)];
     Eyelink('Message', eyelink_message);
     
     error=Eyelink('CheckRecording');
@@ -550,12 +551,14 @@ for trial = 1:trialsPerRun
     
     switch keyPressed
         case leftstack
+            pressed=2;
             if leftHV(trial) == 0
                 out = 0;
             else
                 out = 1;
             end
         case rightstack
+            pressed=1;
             if leftHV(trial) == 1
                 out = 0;
             else
@@ -564,20 +567,18 @@ for trial = 1:trialsPerRun
     end
     
     if goodresp==1
-        Eyelink('Message',['run: ',num2str(numRun),', trial: ',num2str(trial),', Feedback_time: ',num2str(onsetlist(trial)+respTime)]);
-        Eyelink('Message', 'TRIAL OK');
         Eyelink('Message', 'TRIAL_RESULT %d', pressed);
-        
+        Eyelink('Message', 'ENDBUTTON');
+        Eyelink('Message',['run: ',num2str(numRun),', trial: ',num2str(trial),', Feedback_time: ',num2str(onsetlist(trial)+respTime)]);
+
         Screen('PutImage',w,Images{stimnum1(trial)}, leftRect);
         Screen('PutImage',w,Images{stimnum2(trial)}, rightRect);
         
         switch keyPressed
             case leftstack
                 Screen('FrameRect', w, green, leftRect, penWidth);
-                pressed=2;
             case rightstack
                 Screen('FrameRect', w, green, rightRect, penWidth);
-                pressed=1;
         end
         
         CenterText(w,'+', white,0,0);
@@ -610,6 +611,7 @@ for trial = 1:trialsPerRun
         respTime = 999;
     end
     
+    Eyelink('Message', 'TRIAL OK');
     %-----------------------------------------------------------------
     % 'Save data'
     %-----------------------------------------------------------------

@@ -1,5 +1,7 @@
 okOrder = [1 2];
+oktaskOrder = [1 2];
 okuse_eye = [0 1];
+okscan = [0 1];
 
 subjectID = input('Enter Subject ID: ','s');
 while isempty(subjectID)
@@ -19,10 +21,22 @@ while isempty(test_comp)
     test_comp = input('Enter Computer name:','s');
 end
 
-order = input('Enter order number (1,2 ; this should be counterbalanced across subjects): ');
+order = input('Enter button order number (1,2 ; this should be counterbalanced across subjects): ');
 while isempty(order) || sum(okOrder==order)~=1
     disp('ERROR: input must be 1 or 2 . Please try again.');
     order = input('Enter order number (1,2 ; this should be counterbalanced across subjects): ');
+end
+
+taskorder = input('Enter task order number (1,2 ; this should be counterbalanced across subjects): ');
+while isempty(taskorder) || sum(oktaskOrder==taskorder)~=1
+    disp('ERROR: input must be 1 or 2 . Please try again.');
+    order = input('Enter task order number (1,2 ; this should be counterbalanced across subjects): ');
+end
+
+scan = input('Are you scanning? (1=YES, 0=NO): ');
+while isempty(scan) || sum(okscan==scan)~=1
+    disp('ERROR: input must be 1 or 0 . Please try again.');
+    scan = input('Are you scanning? (1=YES, 0=NO): ');
 end
 
 use_eye = input('Are you using the eyetracker? (1=YES, 0=NO): ');
@@ -31,29 +45,27 @@ while isempty(use_eye) || sum(okuse_eye==use_eye)~=1
     use_eye = input('Are you using the eyetracker? (1=YES, 0=NO): ');
 end
 
-%%MODIFY IF NEEDED
+subkbid=getKeyboards;
+triggerkbid=input('Which device index do you want to use for the trigger?: ');
+expkbid=input('Which device index do you want to use for the experimenter?: ');
+
+ColorDots_practice(subjectID,test_comp,exp_init,eye,scan,order)
 %2 runs of food_rating
-for run=1:2
-     food_rating(subjectID,run,use_eye);
- end
- %do all the sorting and forming of choice pairs
- sort_ratings(subjectID,order);
- cat_form_probe_pairs(subjectID, order, 2); %2 repetitions of each unique choice pair for CAT_probe
- form_food_choice_pairs(subjectID, order,3); %split 210 choice trials into 3 runs
- 
- for block=1:6
-      cat_training(subjectID,order,use_eye,block);
- end
-   
- ColorDots_practice(subjectID,test_comp,exp_init,use_eye,0,order);
- 
-cat_probe(subjectID, order, 1, use_eye);
+for run=2%1:2
+    food_rating(subjectID,run,use_eye);
+end
+%do all the sorting and forming of choice pairs
+sort_ratings(subjectID);
+form_food_choice_pairs(subjectID, 3); %2 repetitions of each unique choice pair for CAT_probe
 
- for run=1:3
-     food_choice(subjectID, run, use_eye)
+ for run=1%:3
+     switch taskorder
+         case 1
+            food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)
+            ColorDots_test(subjid,test_comp,exp_init,eye,scan,run,order,subkbid,expkbid,triggerkbid)
+         case 2
+             ColorDots_test(subjectID,test_comp,exp_init,use_eye,0,run,order)
+             ColorDots_test(subjid,test_comp,exp_init,eye,scan,run,order,subkbid,expkbid,triggerkbid)
+     end
  end
  
- for run=1:3
-    ColorDots_test(subjectID,test_comp,exp_init,use_eye,0,run,order)
- end
-

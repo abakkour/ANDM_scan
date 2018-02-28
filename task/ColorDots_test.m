@@ -25,8 +25,8 @@ function ColorDots_test(subjid,test_comp,exp_init,eye,scan,run,button_order,subk
 % Feb 2016 modified by AB. ab4096 at columbia dot edu.
 
 Screen('Preference', 'VisualDebugLevel', 0);
-Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
-Screen('Preference', 'SkipSyncTests', 1); %FOR TESTING ONLY
+%Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
+%Screen('Preference', 'SkipSyncTests', 1); %FOR TESTING ONLY
 
 c=clock;
 hr=num2str(c(4));
@@ -252,13 +252,8 @@ end
 KbQueueFlush(subkbid);
 KbQueueFlush(triggerkbid);
 CenterText(win,'+',white,0,0);
-Screen('Flip',win);
+runStart=Screen('Flip',win);
 
-
-datafolder=['../data/' subjid '/'];
-if exist(datafolder,'dir')==0
-    mkdir(datafolder)
-end
 
 fid1=fopen(['../data/' subjid '/' subjid '_dots_test_run_' num2str(run) '_' timestamp '.txt'], 'a');
 %write the header line
@@ -282,11 +277,6 @@ Eyelink('StartRecording');
 % record a few samples before we actually start displaying
 % otherwise you may lose a few msec of data
 WaitSecs(0.1);
-
-CenterText(win,'+',white,0,0);
-runStart=Screen('Flip',win);
-% Wait 2 seconds before you start the dots
-WaitSecs(2);
 
 % Iterating trials
 for trial=1:n_trial
@@ -361,11 +351,11 @@ for trial=1:n_trial
             % this message can be used to create an interest period in EyeLink
             % Data Viewer
             Eyelink('Message', 'SYNCTIME');
-        end
-        
-        error=Eyelink('CheckRecording');
-        if(error~=0)
-            break;
+            Eyelink('Message', 'DISPLAY ON')
+            error=Eyelink('CheckRecording');
+            if(error~=0)
+                break;
+            end
         end
         
         [keyIsDown, firstPress] = KbQueueCheck(subkbid);
@@ -375,7 +365,9 @@ for trial=1:n_trial
             keyPressed=keyPressed(1);
         end
         if keyIsDown && (strcmp(keyPressed,blue) || strcmp(keyPressed,yellow))
-            keymsg=sprintf('Trial %d Key %s pressed at %.3f', trial, keyPressed, firstPress(KbName(keyPressed))-runStart);
+            Eyelink('Message', 'TRIAL_RESULT %s', keyPressed);
+            Eyelink('Message', 'ENDBUTTON');
+            keymsg=sprintf('Trial %d Key %s pressed at %.3f', trial, keyPressed, firstPress(KbName(keyPressed))-t_fr(1));
             Eyelink('Message', keymsg);
             break;
         end
@@ -390,7 +382,17 @@ for trial=1:n_trial
     info{trial}.t_fr = t_fr;
     
     if isempty(keyPressed)
+
+        Eyelink('Message', 'TRIAL_RESULT 0');
+        Eyelink('Message', 'TIMEOUT');
+        CenterText(win,'TOO SLOW!',white,0,0);
+        fbtime=Screen('Flip', win);
+        fbmsg=sprintf('Trial %d Too Slow feedback on at %.3f', trial, fbtime-runStart);
+        Eyelink('Message', fbmsg);
         keyPressed='x';
+        tstime=.5;
+        WaitSecs(.5);
+        
     end
     
     info{trial}.keypressed = keyPressed;
@@ -425,24 +427,6 @@ for trial=1:n_trial
     % not parse any messages, events, or samples that exist in the data
     % file after this message.
     
-    if keyPressed ~='x'
-        Eyelink('Message', 'TRIAL OK');
-        if strcmp(keyPressed,blue)
-            Eyelink('Message', 'TRIAL_RESULT 1');
-        elseif strcmp(keyPressed,yellow)
-            Eyelink('Message', 'TRIAL_RESULT 2');
-        end
-    end
-    
-    if keyPressed=='x'
-        Eyelink('Message', 'TRIAL_RESULT 0');
-        CenterText(win,'TOO SLOW!',white,0,0);
-        tstime=.5;
-        fbtime=Screen('Flip', win);
-        fbmsg=sprintf('Trial %d Too Slow feedback on at %.3f', trial, fbtime-runStart);
-        Eyelink('Message', fbmsg);
-        WaitSecs(.5);
-    end
     
     CenterText(win,'+',white,0,0);
     fixtime=Screen('Flip', win);
@@ -454,6 +438,7 @@ for trial=1:n_trial
     
     intertrial_interval = 2.5 - info{trial}.disptime - tstime + iti(trial);
     WaitSecs(intertrial_interval);
+    Eyelink('Message', 'TRIAL OK');
     
 end
 save(['../data/' subjid '/' subjid '_dots_test_run_' num2str(run) '_' timestamp '.mat'],'Dots','info')

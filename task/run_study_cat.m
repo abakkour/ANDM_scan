@@ -43,21 +43,21 @@ triggerkbid=input('Which device index do you want to use for the trigger?: ');
 expkbid=input('Which device index do you want to use for the experimenter?: ');
 
 %2 runs of food_rating
-for run=1:2
-    cat_food_rating(subjectID,run,use_eye);
+for run=1%:2
+    %cat_food_rating(subjectID,run,use_eye);
 end
 %do all the sorting and forming of choice pairs
 sort_cat_ratings(subjectID,order);
 cat_form_probe_pairs(subjectID, order, 2); %2 repetitions of each unique choice pair for CAT_probe
 
 %2 runs of CAT Training
-for run=1:6
+for run=1%:6
     input(['Continue to CAT Trainin run ' num2str(run) '?: ']);
     cat_training(subjectID,order,use_eye,run,scan,subkbid,expkbid,triggerkbid);
 end
 
 %2 runs of CAT Probe
-for run=1:2
+for run=1%:2
     input(['Continue to CAT Probe run ' num2str(run) '?: ']);
     cat_probe(subjectID, order, run, use_eye, scan, subkbid,expkbid,triggerkbid);
 end

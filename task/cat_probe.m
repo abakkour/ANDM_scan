@@ -449,8 +449,8 @@ for trial = 1:trialsPerRun
     WaitSecs(0.001);
     
     Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, midRect(1),midRect(2),midRect(3),midRect(4),'fixation');
-    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, leftRect(1),leftRect(2),leftRect(3),leftRect(4),'center');
-    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, rightRect(1),rightRect(2),rightRect(3),rightRect(4),'center');
+    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, leftRect(1),leftRect(2),leftRect(3),leftRect(4),'left');
+    Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 1, rightRect(1),rightRect(2),rightRect(3),rightRect(4),'right');
     
     % Send messages to report trial condition information
     % Each message may be a pair of trial condition variable and its
@@ -468,20 +468,22 @@ for trial = 1:trialsPerRun
     if leftGo(trial) == 1
         Screen('PutImage',w,Images{stimnum1(trial)}, leftRect);
         Screen('PutImage',w,Images{stimnum2(trial)}, rightRect);
-        eyelink_message=['run: ' num2str(run),', trial: ',num2str(trial),', StimLeft: ',stimName{stimnum1(trial)},', StimRight: ',stimName{stimnum2(trial)},', time: ',num2str(onsetlist(runtrial))];
+        eyelink_message=['run: ' num2str(run),', trial: ',num2str(trial),', StimLeft: ',stimName{stimnum1(trial)},', StimRight: ',stimName{stimnum2(trial)},', time: '];
     else
         Screen('PutImage',w,Images{stimnum2(trial)}, leftRect);
         Screen('PutImage',w,Images{stimnum1(trial)}, rightRect);
-        eyelink_message=['run: ' num2str(run),', trial: ',num2str(trial),', StimLeft: ',stimName{stimnum2(trial)},', StimRight: ',stimName{stimnum1(trial)},', time: ',num2str(onsetlist(runtrial))];
+        eyelink_message=['run: ' num2str(run),', trial: ',num2str(trial),', StimLeft: ',stimName{stimnum2(trial)},', StimRight: ',stimName{stimnum1(trial)},', time: '];
     end
     
     CenterText(w,'+', white,0,0);
     StimOnset = Screen(w,'Flip', runStart+onsetlist(runtrial));
+   
     % write out a message to indicate the time of the picture onset
     % this message can be used to create an interest period in EyeLink
     % Data Viewer
     Eyelink('Message', 'SYNCTIME');
-    Eyelink('Message', eyelink_message);   
+    Eyelink('Message', 'DISPLAY ON');
+    Eyelink('Message', [eyelink_message,num2str(StimOnset-runStart)]);   
     
     error=Eyelink('CheckRecording');
     if(error~=0)
@@ -550,9 +552,8 @@ for trial = 1:trialsPerRun
     
     if goodresp==1
         
-        Eyelink('Message',['run: ',num2str(run),', trial: ',num2str(trial),', Feedback_time: ',num2str(onsetlist(trial)+respTime)]);
-        Eyelink('Message', 'TRIAL OK');
         Eyelink('Message', 'TRIAL_RESULT %d', pressed);
+        Eyelink('Message', 'ENDBUTTON');
         
         if leftGo(trial)==1
             Screen('PutImage',w,Images{stimnum1(trial)}, leftRect);
@@ -570,18 +571,24 @@ for trial = 1:trialsPerRun
                 Screen('FrameRect', w, green, rightRect, penWidth);
                 pressed=1;
         end
+               
         CenterText(w,'+', white,0,0);
-        Screen(w,'Flip',runStart+onsetlist(trial)+respTime);
-
+        feedbacktime=Screen(w,'Flip',runStart+onsetlist(trial)+respTime);
+        
+        Eyelink('Message',['run: ',num2str(run),', trial: ',num2str(trial),', Feedback_time: ',num2str(feedbacktime-runStart)]);
+        
     else
         
-        %   Eyelink MSG
-        % ---------------------------
-        Eyelink('Message',['run: ',num2str(run),', trial: ',num2str(trial),', Respond_faster_time: ',num2str(onsetlist(runtrial)+respTime)]);
         Eyelink('Message', 'TRIAL_RESULT 0');
+        Eyelink('Message', 'TIMEOUT');
         
         CenterText(w,sprintf('You must respond faster!') ,white,0,0);
-        Screen(w,'Flip',runStart+onsetlist(runtrial)+respTime);
+        missedtime=Screen(w,'Flip',runStart+onsetlist(runtrial)+respTime);
+
+        %   Eyelink MSG
+        % ---------------------------
+        Eyelink('Message',['run: ',num2str(run),', trial: ',num2str(trial),', Respond_faster_time: ',num2str(missedtime-runStart)]);
+
 
     end % end if goodresp==1
     
@@ -601,6 +608,7 @@ for trial = 1:trialsPerRun
         respTime = 999;
     end
     
+    Eyelink('Message', 'TRIAL OK');
     %-----------------------------------------------------------------
     % 'Save data'
     %-----------------------------------------------------------------

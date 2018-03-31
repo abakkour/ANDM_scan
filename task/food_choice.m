@@ -587,11 +587,11 @@ for trial = 1:trialsPerRun
     else
         %   Eyelink MSG
         % ---------------------------
-        Eyelink('Message',['run: ',num2str(numRun),', trial: ',num2str(trial),', Respond_faster_time: ',num2str(responfastertime-runStart)]);
+        Eyelink('Message',['run: ',num2str(numRun),', trial: ',num2str(trial),', Respond_faster_time: ',num2str(StimOnset+respTime)]);
         Eyelink('Message', 'TRIAL_RESULT 0');
-        %         Screen('DrawText', w, 'You must respond faster!', xcenter-400, ycenter, white);
         CenterText(w,sprintf('You must respond faster!') ,white,0,0);
-        responfastertime=Screen(w,'Flip',runStart+onsetlist(runtrial)+respTime);
+        Screen(w,'Flip',runStart+onsetlist(runtrial)+respTime);
+
     end % end if goodresp==1
     
     %-----------------------------------------------------------------

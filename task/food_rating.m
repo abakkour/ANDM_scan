@@ -38,8 +38,8 @@ pointerRect = [0 0 5 30];
 % -----------------------------------------------
 
 Screen('Preference', 'VisualDebuglevel', 0); %No PTB intro screen
-Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
-Screen('Preference', 'SkipSyncTests', 1); %ONLY FOR TESTING
+%Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
+%Screen('Preference', 'SkipSyncTests', 1); %ONLY FOR TESTING
 
 screennum = min(Screen('Screens')); %select external screen
 

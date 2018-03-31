@@ -1,1 +1,1 @@
-addpath(genpath('ColorDots_lib'));
+addpath(genpath('colordots_lib'));

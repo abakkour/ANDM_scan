@@ -90,7 +90,8 @@ methods (Static)
             color_coh_pool = ...
                 [-2, -1, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 1, 2];
             color_coh = randsample(color_coh_pool, 1);
-            prop = invLogit(color_coh);
+            prop = invLogit(color_coh);%classdef ColorDots < DeepCopyable
+
 
             Dots.init_trial(prop);
 

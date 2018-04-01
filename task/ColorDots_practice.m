@@ -24,6 +24,7 @@ function ColorDots_practice(subjid,test_comp,exp_init,eye,scan,button_order)
 % Feb 2016 modified by AB. ab4096 at columbia dot edu.
 
 Screen('Preference', 'VisualDebugLevel', 0);
+%PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
 %Screen('Preference', 'SkipSyncTests', 1); % FOR TESTING PURPOSES ONLY!
 
 c=clock;

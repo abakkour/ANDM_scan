@@ -25,6 +25,7 @@ function ColorDots_test(subjid,test_comp,exp_init,eye,scan,run,button_order,subk
 % Feb 2016 modified by AB. ab4096 at columbia dot edu.
 
 Screen('Preference', 'VisualDebugLevel', 0);
+%PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
 %Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
 %Screen('Preference', 'SkipSyncTests', 1); %FOR TESTING ONLY
 
@@ -483,11 +484,11 @@ Eyelink('ShutDown');
 if run == 1 || run == 2 % if this is not the last run
     
     Screen('TextSize', win, 40); %Set textsize
-    CenterText(w,sprintf('Another run will begin soon'), white, 0,-300);
+    CenterText(win,sprintf('Another run will begin soon'), white, 0,-300);
     Screen('Flip',win);
 else % if this is the last run
-    CenterText(w,'Great Job. Thank you!', white, 0,-270);
-    CenterText(w,'Now we will continue to the next part', white, 0, -180);
+    CenterText(win,'Great Job. Thank you!', white, 0,-270);
+    CenterText(win,'Now we will continue to the next part', white, 0, -180);
     Screen('Flip',win);
 end
 

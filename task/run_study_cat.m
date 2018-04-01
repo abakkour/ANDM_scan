@@ -43,8 +43,8 @@ triggerkbid=input('Which device index do you want to use for the trigger?: ');
 expkbid=input('Which device index do you want to use for the experimenter?: ');
 
 %2 runs of food_rating
-for run=1%:2
-    %cat_food_rating(subjectID,run,use_eye);
+for run=2%1:2
+    cat_food_rating(subjectID,run,use_eye);
 end
 %do all the sorting and forming of choice pairs
 sort_cat_ratings(subjectID,order);

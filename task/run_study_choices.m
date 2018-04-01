@@ -49,23 +49,23 @@ subkbid=getKeyboards;
 triggerkbid=input('Which device index do you want to use for the trigger?: ');
 expkbid=input('Which device index do you want to use for the experimenter?: ');
 
-ColorDots_practice(subjectID,test_comp,exp_init,eye,scan,order)
+ColorDots_practice(subjectID,test_comp,exp_init,use_eye,scan,order)
 %2 runs of food_rating
-for run=2%1:2
+for run=1:2
     food_rating(subjectID,run,use_eye);
 end
 %do all the sorting and forming of choice pairs
 sort_ratings(subjectID);
-form_food_choice_pairs(subjectID, 3); %2 repetitions of each unique choice pair for CAT_probe
+form_food_choice_pairs(subjectID);
 
- for run=1%:3
+ for run=1:3
      switch taskorder
          case 1
             food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)
-            ColorDots_test(subjid,test_comp,exp_init,eye,scan,run,order,subkbid,expkbid,triggerkbid)
+            ColorDots_test(subjectID,test_comp,exp_init,eye,scan,run,order,subkbid,expkbid,triggerkbid)
          case 2
              ColorDots_test(subjectID,test_comp,exp_init,use_eye,0,run,order)
-             ColorDots_test(subjid,test_comp,exp_init,eye,scan,run,order,subkbid,expkbid,triggerkbid)
+             ColorDots_test(subjectID,test_comp,exp_init,eye,scan,run,order,subkbid,expkbid,triggerkbid)
      end
  end
  

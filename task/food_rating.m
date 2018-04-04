@@ -97,7 +97,7 @@ if IsOctave
     edfFile = 'foodrate';
 else
     
-    edfFile = 'foodrate.EDF';
+    edfFile = ['frate' num2str(run) '.EDF'];
     fprintf('EDFFile: %s\n', edfFile );
 end
 
@@ -106,7 +106,7 @@ end
 % using the PsychToolbox's Screen function.
 % DONE ABOVE
 
-% STEP 3
+% STEP 3'
 % Provide Eyelink with details about the graphics environment
 % and perform some initializations. The information is returned
 % in a structure that also contains useful defaults

@@ -51,14 +51,14 @@ expkbid=input('Which device index do you want to use for the experimenter?: ');
 
 ColorDots_practice(subjectID,test_comp,exp_init,use_eye,scan,order)
 %2 runs of food_rating
-for run=1:2
+for run=2%1:2
     food_rating(subjectID,run,use_eye);
 end
 %do all the sorting and forming of choice pairs
 sort_ratings(subjectID);
 form_food_choice_pairs(subjectID);
 
- for run=1:3
+ for run=1%:3
      switch taskorder
          case 1
             food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)

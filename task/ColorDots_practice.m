@@ -127,7 +127,7 @@ if IsOctave
     edfFile = 'dotsprac';
 else
     
-    edfFile= 'dotsprac.EDF';
+    edfFile= 'dotsp1.EDF';
     fprintf('EDFFile: %s\n', edfFile );
 end
 
@@ -478,7 +478,7 @@ for c=1:5
             a=0;
         elseif c==4 && trial >= 40 && nanmean(outcomes(trial-9:trial))>=.8
             a=0;
-        elseif trial== 200
+        elseif trial>= 200
             a=0;
         end
         
@@ -542,10 +542,10 @@ for c=1:5
             % experiment graphics. Make sure the entered EDF file name is 1 to 8
             % characters in length and only numbers or letters are allowed.
             if IsOctave
-                edfFile = 'dots';
+                edfFile = 'dotsp2';
             else
                 
-                edfFile= 'dots.EDF';
+                edfFile= 'dotsp2.EDF';
                 fprintf('EDFFile: %s\n', edfFile );
             end
             

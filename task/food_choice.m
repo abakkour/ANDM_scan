@@ -226,7 +226,7 @@ if IsOctave
     edfFile = 'food';
 else
     
-    edfFile= 'food.EDF';
+    edfFile= ['foodch' num2str(numRun) '.EDF'];
     fprintf('EDFFile: %s\n', edfFile );
 end
 

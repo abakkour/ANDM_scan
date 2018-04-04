@@ -120,7 +120,7 @@ if IsOctave
     edfFile = 'dots';
 else
     
-    edfFile= 'dots.EDF';
+    edfFile= ['dotst' num2str(run) '.EDF'];
     fprintf('EDFFile: %s\n', edfFile );
 end
 

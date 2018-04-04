@@ -626,7 +626,7 @@ for trialNum = 1:length(shuff_trialType{runNum})   % To cover all the items in o
                 respTime{runNum}(trialNum,1) = firstPress(firstKeyPressed)-image_start_time;
                 
                 %   different response types in scanner or in testing room
-                if test_comp == 1
+                if scan == 1
                     if keyPressed{runNum}(trialNum,1) == blue || keyPressed{runNum}(trialNum,1) == yellow
                         noresp = 0;
                         if respTime{runNum}(trialNum,1) < Ladder2{runNum}(length(Ladder2{runNum}),1)/1000

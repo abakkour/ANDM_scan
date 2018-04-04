@@ -552,9 +552,6 @@ for trial = 1:trialsPerRun
     
     if goodresp==1
         
-        Eyelink('Message', 'TRIAL_RESULT %d', pressed);
-        Eyelink('Message', 'ENDBUTTON');
-        
         if leftGo(trial)==1
             Screen('PutImage',w,Images{stimnum1(trial)}, leftRect);
             Screen('PutImage',w,Images{stimnum2(trial)}, rightRect);
@@ -572,6 +569,9 @@ for trial = 1:trialsPerRun
                 pressed=1;
         end
                
+        Eyelink('Message', 'TRIAL_RESULT %d', pressed);
+        Eyelink('Message', 'ENDBUTTON');
+        
         CenterText(w,'+', white,0,0);
         feedbacktime=Screen(w,'Flip',runStart+onsetlist(trial)+respTime);
         

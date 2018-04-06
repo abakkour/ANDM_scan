@@ -122,6 +122,8 @@ if ~EyelinkInit(dummymode)
     return;
 end
 
+%Eyelink('command', 'data_file_path = "/elcl/data/test4"')
+
 % the following code is used to check the version of the eye tracker
 % and version of the host software
 

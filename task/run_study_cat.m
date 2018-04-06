@@ -38,6 +38,15 @@ while isempty(use_eye) || sum(okuse_eye==use_eye)~=1
     use_eye = input('Are you using the eyetracker? (1=YES, 0=NO): ');
 end
 
+audiodevices=PsychPortAudio('GetDevices');
+for i=1:length(audiodevices)
+    if strcmp(audiodevices(i).DeviceName,'USB Audio Device: USB Audio (hw:2,0)')
+        sprintf('Using audio device: %d',i)
+        aud=i;
+    end
+end
+
+
 subkbid=getKeyboards;
 triggerkbid=input('Which device index do you want to use for the trigger?: ');
 expkbid=input('Which device index do you want to use for the experimenter?: ');
@@ -53,7 +62,7 @@ cat_form_probe_pairs(subjectID, order, 2); %2 repetitions of each unique choice 
 %%2 runs of CAT Training
 for run=1%:6
     input(['Continue to CAT Training run ' num2str(run) '?: ']);
-    cat_training(subjectID,order,use_eye,run,scan,subkbid,expkbid,triggerkbid);
+    cat_training(subjectID,order,use_eye,run,scan,subkbid,expkbid,triggerkbid,aud);
 end
 
 %%2 runs of CAT Probe

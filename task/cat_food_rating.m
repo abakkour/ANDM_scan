@@ -97,7 +97,7 @@ if IsOctave
     edfFile = 'catrate';
 else
     
-    edfFile = 'catrate.EDF';
+    edfFile = ['catrate' num2str(run) '.EDF'];
     fprintf('EDFFile: %s\n', edfFile );
 end
 

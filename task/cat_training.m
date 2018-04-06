@@ -231,7 +231,7 @@ if IsOctave
     edfFile = 'cattrain';
 else
     
-    edfFile= 'cattrain.EDF';
+    edfFile= ['cattr' num2str(run) '.EDF';
     fprintf('EDFFile: %s\n', edfFile );
 end
 

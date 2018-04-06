@@ -221,7 +221,7 @@ if IsOctave
     edfFile = 'catprobe';
 else
     
-    edfFile= 'catprobe.EDF';
+    edfFile= ['catpr' num2str(run) '.EDF'];
     fprintf('EDFFile: %s\n', edfFile );
 end
 

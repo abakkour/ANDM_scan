@@ -1,4 +1,4 @@
-function cat_training(subjectID,order,use_eyetracker,block,scan,subkbid,expkbid,triggerkbid)
+function cat_training(subjectID,order,use_eyetracker,block,scan,subkbid,expkbid,triggerkbid,aud)
 
 % = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 % =============== Created based on the previous boost codes ===============
@@ -231,7 +231,7 @@ if IsOctave
     edfFile = 'cattrain';
 else
     
-    edfFile= ['cattr' num2str(run) '.EDF';
+    edfFile= ['cattr' num2str(block) '.EDF'];
     fprintf('EDFFile: %s\n', edfFile );
 end
 
@@ -326,6 +326,7 @@ el.drift_correction_success_beep=[800 0.5 0.25];
 % you must call this function to apply the changes from above
 EyelinkUpdateDefaults(el);
 
+%PsychPortAudio('Open', aud);
 % Hide the mouse cursor;
 %Screen('HideCursorHelper', w); % done above
 EyelinkDoTrackerSetup(el);
@@ -335,21 +336,21 @@ EyelinkDoTrackerSetup(el);
 % Performing drift correction (checking) is optional for
 % EyeLink 1000 eye trackers.
 EyelinkDoDriftCorrection(el);
-
-
+Snd('Close')
 % -------------------------------------------------------
 %% 'Sound settings'
 %%---------------------------------------------------------------
 
 % load('Misc/soundfile.mat');
-wave = sin(1:0.25:1000);
-freq = 22254;
+wave = [sin(1:0.25:1000);sin(1:0.25:1000)];
+freq = 44100;%22254;
 use_PTB_audio=1; % 1 for PTB audio function or 0 to for matlab's bulit in audio function (use only in case PTB's functions do not work well)
 
 %% With PTB audio player
 if use_PTB_audio==1
-    nrchannels = size(wave,1);
-    deviceID = -1;
+    %PsychPortAudio('Close');
+    nrchannels = 2;%size(wave,1);
+    deviceID = aud;
     reqlatencyclass = 2; % class 2 empirically the best, 3 & 4 == 2
     InitializePsychSound(1);% Initialize driver, request low-latency preinit:
     % Open audio device for low-latency output:
@@ -521,7 +522,7 @@ for trialNum = 1:length(shuff_trialType{runNum})   % To cover all the items in o
             %clc;
             disp('BEEP');
             if use_PTB_audio==1
-                %                     PsychPortAudio('FillBuffer', pahandle, wave);
+                %PsychPortAudio('FillBuffer', pahandle, wave);
                 PsychPortAudio('Start', pahandle, 1, 0, 0);
             elseif use_PTB_audio==0
                 play(Audio);
@@ -591,7 +592,7 @@ for trialNum = 1:length(shuff_trialType{runNum})   % To cover all the items in o
             disp('BEEP')
             % Beep!
             if use_PTB_audio==1
-                %                     PsychPortAudio('FillBuffer', pahandle, wave);
+                %PsychPortAudio('FillBuffer', pahandle, wave);
                 PsychPortAudio('Start', pahandle, 1, 0, 0);
             elseif use_PTB_audio==0
                 play(Audio);
@@ -712,11 +713,11 @@ for trialNum = 1:length(shuff_trialType{runNum})   % To cover all the items in o
     %   Close the Audio port and open a new one
     %------------------------------------------
     if use_PTB_audio==1
-        %                 PsychPortAudio('Stop', pahandle);
-        %             PsychPortAudio('Close', pahandle);
-        %             pahandle = PsychPortAudio('Open', deviceID, [], reqlatencyclass, freq, nrchannels);
+        %PsychPortAudio('Stop', pahandle);
+        %PsychPortAudio('Close', pahandle);
+        %pahandle = PsychPortAudio('Open', deviceID, [], reqlatencyclass, freq, nrchannels);
         %             PsychPortAudio('RunMode', pahandle, 1);
-        PsychPortAudio('FillBuffer', pahandle, wave);
+        %PsychPortAudio('FillBuffer', pahandle, wave);
     end
     
     %   Eyelink MSG

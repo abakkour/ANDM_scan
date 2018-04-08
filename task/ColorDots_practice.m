@@ -684,7 +684,7 @@ for c=1:5
     end
 end
 
-save(['Output/' subjid '_dots_practice_' timestamp '.mat'],'Dots','info')
+save(['../data/' subjid '/' subjid '_dots_practice_' timestamp '.mat'],'Dots','info')
 
 fclose(fid1);
 if trial == 200

@@ -96,7 +96,7 @@ Screen('Preference', 'VisualDebuglevel', 0); %No PTB intro screen
 %PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
 %Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
 
-screennum = min(Screen('Screens'));
+screennum = max(Screen('Screens'));
 
 pixelSize = 32;
 [w] = Screen('OpenWindow',screennum,[],[],pixelSize);

@@ -280,7 +280,7 @@ Eyelink('StartRecording');
 WaitSecs(0.1);
 
 % Iterating trials
-for trial=1:n_trial
+for trial=1:2%n_trial
     
     tstime=0;
     fprintf('-----\n');

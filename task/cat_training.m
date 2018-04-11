@@ -85,7 +85,7 @@ Screen('Preference', 'VisualDebuglevel', 0); %No PTB intro screen
 %Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
 %Screen('Preference', 'SkipSyncTests', 1); %FOR TESTING ONLY
 
-screennum = min(Screen('Screens'));
+screennum = max(Screen('Screens'));
 
 pixelSize=32;
 [w,windowRect] = Screen('OpenWindow',screennum,[],[],pixelSize);
@@ -247,6 +247,7 @@ end
 % and control codes (e.g. tracker state bit and Eyelink key values).
 el=EyelinkInitDefaults(w);
 
+
 % STEP 4
 % Initialization of the connection with the Eyelink Gazetracker.
 % exit program if this fails.
@@ -405,11 +406,13 @@ if scan==1
     CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a 't' trigger signal from the scanner
     Screen('Flip',w);
     KbQueueFlush(triggerkbid);
-    KbTriggerWait(KbName('t'),triggerkbid);
+    KbQueueRelease(triggerkbid);
+    KbTriggerWait(KbName('5%'),triggerkbid);
 end
 
 KbQueueFlush(subkbid);
-KbQueueFlush(triggerkbid);
+KbQueueCreate(subkbid);
+KbQueueStart(subkbid);
 CenterText(w,'+',white,0,0);
 runStartTime=Screen('Flip',w);
 

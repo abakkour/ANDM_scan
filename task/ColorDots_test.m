@@ -70,8 +70,7 @@ white=[255 255 255];
 
 KbQueueCreate(expkbid);
 KbQueueStart(expkbid);
-KbQueueCreate(subkbid);
-KbQueueStart(subkbid);
+
 HideCursor;
 
 switch eye
@@ -227,7 +226,7 @@ EyelinkDoDriftCorrection(el);
 
 % ignore keyboard inputs
 ListenChar(2);
-KbQueueFlush(subkbid);
+
 
 %INTRUCTIONS
 Screen('TextSize',win,40);
@@ -241,17 +240,26 @@ CenterText(win,'Rather, try to estimate the rough average.',white,0,0);
 CenterText(win,'Please respond as soon as you have an answer.',white,0,50);
 CenterText(win,'Press any button to continue...',white,0,200);
 Screen('Flip',win);
-KbQueueWait(subkbid);
+
+KbQueueCreate(subkbid);
+KbQueueStart(subkbid);
 KbQueueFlush(subkbid);
-KbQueueFlush(triggerkbid);
+KbQueueWait(subkbid);
+KbQueueStop(subkbid);
+
 if scan==1
-    CenterText(win,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a 't' trigger signal from the scanner
-    Screen('Flip',win);
-    KbTriggerWait(KbName('t'),triggerkbid);
+    KbQueueCreate(triggerkbid);
+    KbQueueStart(triggerkbid);
+    CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
+    Screen('Flip',w);
+    KbQueueFlush(triggerkbid);
+    KbQueueWait(triggerkbid,KbName('%5'));
+    KbQueueStop(triggerkbid);
 end
 
-KbQueueFlush(subkbid);
-KbQueueFlush(triggerkbid);
+KbQueueCreate(subkbid);
+KbQueueStart(subkbid);
+
 CenterText(win,'+',white,0,0);
 runStart=Screen('Flip',win);
 

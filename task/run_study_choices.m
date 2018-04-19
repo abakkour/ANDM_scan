@@ -49,17 +49,17 @@ subkbid=getKeyboards;
 triggerkbid=input('Which device index do you want to use for the trigger?: ');
 expkbid=input('Which device index do you want to use for the experimenter?: ');
 
-ColorDots_practice(subjectID,test_comp,exp_init,use_eye,scan,order)
+%ColorDots_practice(subjectID,test_comp,exp_init,use_eye,scan,order)
 %2 runs of food_rating
 for run=1:2
-    input(['Continue to food rating run ' num2str(run) '?: '])
-    food_rating(subjectID,run,use_eye);
+    %input(['Continue to food rating run ' num2str(run) '?: '])
+    %food_rating(subjectID,run,use_eye);
 end
 %do all the sorting and forming of choice pairs
 sort_ratings(subjectID);
 form_food_choice_pairs(subjectID);
 
- for run=1:3
+ for run=1%:3
      switch taskorder
          case 1
             input(['Continue to food choice run ' num2str(run) '?: '])

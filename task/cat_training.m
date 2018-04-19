@@ -381,6 +381,7 @@ ListenChar(2);
 %---------------------------------------------------------------
 %% 'Display Main Instructions'
 %---------------------------------------------------------------
+KbQueueFlush(expkbid);
 
 Screen('TextSize',w, 40);
 
@@ -397,22 +398,23 @@ WaitSecs(0.01);
 %% initialize all keyboards
 KbQueueCreate(subkbid);
 KbQueueStart(subkbid);
-KbQueueCreate(triggerkbid);
-KbQueueStart(triggerkbid);
 KbQueueFlush(subkbid);
 KbQueueWait(subkbid);
+KbQueueStop(subkbid);
 
 if scan==1
-    CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a 't' trigger signal from the scanner
+    KbQueueCreate(triggerkbid);
+    KbQueueStart(triggerkbid);
+    CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
     Screen('Flip',w);
     KbQueueFlush(triggerkbid);
-    KbQueueRelease(triggerkbid);
-    KbTriggerWait(KbName('5%'),triggerkbid);
+    KbQueueWait(triggerkbid,KbName('%5'));
+    KbQueueStop(triggerkbid);
 end
 
-KbQueueFlush(subkbid);
 KbQueueCreate(subkbid);
 KbQueueStart(subkbid);
+
 CenterText(w,'+',white,0,0);
 runStartTime=Screen('Flip',w);
 

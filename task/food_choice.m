@@ -338,9 +338,6 @@ EyelinkDoDriftCorrection(el);
 ListenChar(2); %suppress keyboard output to command line
 
 KbQueueFlush(expkbid);
-KbQueueStop(expkbid);
-KbQueueCreate(subkbid);
-KbQueueStart(subkbid);
 
 Screen('TextSize',w, 40);
 
@@ -379,6 +376,8 @@ else % if this is not the first run of the block
 end % end if numRun == 1
 
 Screen(w,'Flip');    
+KbQueueCreate(subkbid);
+KbQueueStart(subkbid);
 KbQueueFlush(subkbid);
 KbQueueWait(subkbid);
 KbQueueStop(subkbid);
@@ -393,10 +392,10 @@ fprintf(fid1,'subjectID\trun\ttrial\tonsettime\tImageLeft\tImageRight\tratingOrd
 if scan==1
     KbQueueCreate(triggerkbid);
     KbQueueStart(triggerkbid);
-    CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a 't' trigger signal from the scanner
+    CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
     Screen('Flip',w);
     KbQueueFlush(triggerkbid);
-    KbQueueWait(triggerkbid,KbName('t'));
+    KbQueueWait(triggerkbid,KbName('%5'));
     KbQueueStop(triggerkbid);
 end
 

@@ -330,10 +330,6 @@ EyelinkDoDriftCorrection(el);
 %% 'Display Main Instructions'
 %==============================================
 KbQueueFlush(expkbid);
-KbQueueCreate(subkbid);
-KbQueueStart(subkbid);
-KbQueueCreate(triggerkbid);
-KbQueueStart(triggerkbid);
 
 Screen('TextSize',w, 40);
 
@@ -363,8 +359,11 @@ end
 CenterText(w,'Please press any button to continue ...',white, 0, 350);
 Screen(w,'Flip');
 % wait for the subject to press the button
+KbQueueCreate(subkbid);
+KbQueueStart(subkbid);
 KbQueueFlush(subkbid);
 KbQueueWait(subkbid);
+KbQueueStop(subkbid);
 
 %-----------------------------------------------------------------
 %% 'Write output file header'
@@ -374,14 +373,18 @@ fid1 = fopen([outputPath '/' subjectID sprintf('_cat_probe_run%d_', run) timesta
 fprintf(fid1,'subjectID\torder\trun\ttrial\tonsettime\tImageLeft\tImageRight\tratingOrderLeft\tratingOrderRight\tIsleftGo\tResponse\tPairType\tOutcome\tRT\tratingLeft\tratingRight\tfixationTime\n'); %write the header line
 
 if scan==1
-    CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a 't' trigger signal from the scanner
+    KbQueueCreate(triggerkbid);
+    KbQueueStart(triggerkbid);
+    CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
     Screen('Flip',w);
     KbQueueFlush(triggerkbid);
-    KbQueueWait(triggerkbid,KbName('t'));
+    KbQueueWait(triggerkbid,KbName('%5'));
+    KbQueueStop(triggerkbid);
 end
 
-KbQueueFlush(subkbid);
-KbQueueFlush(triggerkbid);
+KbQueueCreate(subkbid);
+KbQueueStart(subkbid);
+
 CenterText(w,'+',white,0,0);
 runStart=Screen('Flip',w);
 

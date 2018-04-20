@@ -38,13 +38,7 @@ while isempty(use_eye) || sum(okuse_eye==use_eye)~=1
     use_eye = input('Are you using the eyetracker? (1=YES, 0=NO): ');
 end
 
-audiodevices=PsychPortAudio('GetDevices');
-for i=1:length(audiodevices)
-    if strcmp(audiodevices(i).DeviceName,'USB Audio Device: USB Audio (hw:1,0)')
-        sprintf('Using audio DeviceIndex: %d',audiodevices(i).DeviceIndex)
-        aud=audiodevices(i).DeviceIndex;
-    end
-end
+aud=getAudioIndex;
 
 subkbid=getKeyboards;
 triggerkbid=input('Which device index do you want to use for the trigger?: ');

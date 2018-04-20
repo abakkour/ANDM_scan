@@ -356,17 +356,21 @@ if use_PTB_audio==1
     InitializePsychSound(1);% Initialize driver, request low-latency preinit:
     % Open audio device for low-latency output:
     pahandle = PsychPortAudio('Open', deviceID, [], reqlatencyclass, freq, nrchannels);
+    PsychPortAudio('Volume', pahandle, 0.08);
     PsychPortAudio('RunMode', pahandle, 1);
     %Play the sound
     PsychPortAudio('FillBuffer', pahandle, wave);
     PsychPortAudio('Start', pahandle, 1, 0, 0);
+    
     WaitSecs(1);
     % Close the sound and open a new port for the next sound with low latency
     
     PsychPortAudio('Close', pahandle);
     pahandle = PsychPortAudio('Open', deviceID, [], reqlatencyclass, freq, nrchannels);
+    PsychPortAudio('Volume', pahandle, 0.08);
     PsychPortAudio('RunMode', pahandle, 1);
     PsychPortAudio('FillBuffer', pahandle, wave);
+    
     
     %% Without PTB audio player
 elseif use_PTB_audio==0

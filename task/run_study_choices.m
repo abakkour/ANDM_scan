@@ -65,10 +65,10 @@ form_food_choice_pairs(subjectID);
             input(['Continue to food choice run ' num2str(run) '?: '])
             food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)
             input(['Continue to ColorDots test run ' num2str(run) '?: '])
-            ColorDots_test(subjectID,test_comp,exp_init,eye,scan,run,order,subkbid,expkbid,triggerkbid)
+            ColorDots_test(subjectID,test_comp,exp_init,use_eye,scan,run,order,subkbid,expkbid,triggerkbid)
          case 2
             input(['Continue to ColorDots test run ' num2str(run) '?: '])
-            ColorDots_test(subjectID,test_comp,exp_init,eye,scan,run,order,subkbid,expkbid,triggerkbid)
+            ColorDots_test(subjectID,test_comp,exp_init,use_eye,scan,run,order,subkbid,expkbid,triggerkbid)
             input(['Continue to food choice run ' num2str(run) '?: '])
             food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)
      end

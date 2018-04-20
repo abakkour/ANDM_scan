@@ -356,7 +356,7 @@ if use_PTB_audio==1
     InitializePsychSound(1);% Initialize driver, request low-latency preinit:
     % Open audio device for low-latency output:
     pahandle = PsychPortAudio('Open', deviceID, [], reqlatencyclass, freq, nrchannels);
-    PsychPortAudio('Volume', pahandle, 0.08);
+    PsychPortAudio('Volume', pahandle, 0.5);
     PsychPortAudio('RunMode', pahandle, 1);
     %Play the sound
     PsychPortAudio('FillBuffer', pahandle, wave);
@@ -367,7 +367,7 @@ if use_PTB_audio==1
     
     PsychPortAudio('Close', pahandle);
     pahandle = PsychPortAudio('Open', deviceID, [], reqlatencyclass, freq, nrchannels);
-    PsychPortAudio('Volume', pahandle, 0.08);
+    PsychPortAudio('Volume', pahandle, 0.5);
     PsychPortAudio('RunMode', pahandle, 1);
     PsychPortAudio('FillBuffer', pahandle, wave);
     
@@ -412,7 +412,7 @@ if scan==1
     CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
     Screen('Flip',w);
     KbQueueFlush(triggerkbid);
-    KbQueueWait(triggerkbid,KbName('%5'));
+    KbQueueWait(triggerkbid,KbName('5%'));
     KbQueueStop(triggerkbid);
 end
 

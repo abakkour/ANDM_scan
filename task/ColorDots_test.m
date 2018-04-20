@@ -246,14 +246,14 @@ KbQueueStart(subkbid);
 KbQueueFlush(subkbid);
 KbQueueWait(subkbid);
 KbQueueStop(subkbid);
-
+KbName('UnifyKeyNames');
 if scan==1
     KbQueueCreate(triggerkbid);
     KbQueueStart(triggerkbid);
-    CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
-    Screen('Flip',w);
+    CenterText(win,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
+    Screen('Flip',win);
     KbQueueFlush(triggerkbid);
-    KbQueueWait(triggerkbid,KbName('%5'));
+    KbQueueWait(triggerkbid,KbName('5%'));
     KbQueueStop(triggerkbid);
 end
 
@@ -288,7 +288,7 @@ Eyelink('StartRecording');
 WaitSecs(0.1);
 
 % Iterating trials
-for trial=1:2%n_trial
+for trial=1:n_trial
     
     tstime=0;
     fprintf('-----\n');

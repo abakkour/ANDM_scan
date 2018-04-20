@@ -99,7 +99,7 @@ Screen('Preference', 'VisualDebuglevel', 0); %No PTB intro screen
 %PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
 %Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
 
-screennum = min(Screen('Screens'));
+screennum = max(Screen('Screens'));
 
 pixelSize = 32;
 [w] = Screen('OpenWindow',screennum,[],[],pixelSize);
@@ -140,8 +140,8 @@ HideCursor;
 KbName('UnifyKeyNames');
 
 if scan == 1
-    leftstack = 'b';
-    rightstack = 'y';
+    leftstack = '3#';
+    rightstack = '4$';
     badresp = 'x';
 else
     leftstack = 'u';
@@ -381,6 +381,7 @@ KbQueueStart(subkbid);
 KbQueueFlush(subkbid);
 KbQueueWait(subkbid);
 KbQueueStop(subkbid);
+KbQueueStop(expkbid);
 
 %-----------------------------------------------------------------
 %% 'Write output file header'
@@ -392,10 +393,11 @@ fprintf(fid1,'subjectID\trun\ttrial\tonsettime\tImageLeft\tImageRight\tratingOrd
 if scan==1
     KbQueueCreate(triggerkbid);
     KbQueueStart(triggerkbid);
+    KbName('UnifyKeyNames');
     CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
     Screen('Flip',w);
     KbQueueFlush(triggerkbid);
-    KbQueueWait(triggerkbid,KbName('%5'));
+    KbQueueWait(triggerkbid,KbName('5%'));
     KbQueueStop(triggerkbid);
 end
 

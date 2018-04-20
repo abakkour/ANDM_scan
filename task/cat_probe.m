@@ -137,8 +137,8 @@ HideCursor;
 KbName('UnifyKeyNames');
 
 if scan == 1
-    leftstack = '1!';
-    rightstack = '2@';
+    leftstack = '3#';
+    rightstack = '4$';
     badresp = 'x';
 else
     leftstack = 'u';
@@ -378,7 +378,7 @@ if scan==1
     CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
     Screen('Flip',w);
     KbQueueFlush(triggerkbid);
-    KbQueueWait(triggerkbid,KbName('%5'));
+    KbQueueWait(triggerkbid,KbName('5%'));
     KbQueueStop(triggerkbid);
 end
 

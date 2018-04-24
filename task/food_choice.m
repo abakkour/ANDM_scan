@@ -393,7 +393,6 @@ fprintf(fid1,'subjectID\trun\ttrial\tonsettime\tImageLeft\tImageRight\tratingOrd
 if scan==1
     KbQueueCreate(triggerkbid);
     KbQueueStart(triggerkbid);
-    KbName('UnifyKeyNames');
     CenterText(w,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
     Screen('Flip',w);
     KbQueueFlush(triggerkbid);
@@ -513,7 +512,7 @@ for trial = 1:trialsPerRun
     goodresp = 0;
     while noresp
         % check for response
-        [keyIsDown, firstPress] = KbQueueCheck;
+        [keyIsDown, firstPress] = KbQueueCheck(subkbid);
         
         if keyIsDown && noresp
             %   Eyelink MSG

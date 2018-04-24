@@ -54,8 +54,8 @@ end
 
 %%2 runs of CAT Training
 for run=1%:6
-    input(['Continue to CAT Training run ' num2str(run) '?: ']);
-    cat_training(subjectID,order,use_eye,run,scan,subkbid,expkbid,triggerkbid,aud);
+    %input(['Continue to CAT Training run ' num2str(run) '?: ']);
+    %cat_training(subjectID,order,use_eye,run,scan,subkbid,expkbid,triggerkbid,aud);
 end
 
 %%2 runs of CAT Probe

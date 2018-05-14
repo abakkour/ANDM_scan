@@ -55,24 +55,28 @@ end
 if cat_p1==1
     %%2 runs of food_rating
     for run=1:2
-        cat_food_rating(subjectID,run,use_eye);
+        %cat_food_rating(subjectID,run,use_eye);
     end
     %do all the sorting and forming of choice pairs
-    sort_cat_ratings(subjectID,order);
-    cat_form_probe_pairs(subjectID, order, 2); %2 repetitions of each unique choice pair for CAT_probe
+    %sort_cat_ratings(subjectID,order);
+    %cat_form_probe_pairs(subjectID, order, 2); %2 repetitions of each unique choice pair for CAT_probe
     
     
     %%2 runs of CAT Training
     for run=1:6
         input(['Continue to CAT Training run ' num2str(run) '?: ']);
-        cat_training(subjectID,order,use_eye,run,scan,subkbid,expkbid,triggerkbid,aud);
+        %cat_training(subjectID,order,use_eye,run,scan,subkbid,expkbid,triggerkbid,aud);
+        sca;
     end
+    clc    
     uni=input('Enter your UNI (in single quotes) to transfer files: ');
     servername=sprintf('open smb://ADCU\\%s@labshare-smb.engram.rc.zi.columbia.edu:/shohamy-labshare',uni);
     system(servername)
+    input('Now connected? Transfer now?: ');
     system('rsync -avx ../data/ /Volumes/shohamy-labshare/ANDM_scan/data/')
 end
 
+clc
 cat_p2=input('Do you want to run CAT part two (inside scanner)? (1=YES, 0=NO): ');
 while isempty(cat_p2) || sum(okp2==cat_p2)~=1
     disp('ERROR: input must be 1 or 0 . Please try again.');

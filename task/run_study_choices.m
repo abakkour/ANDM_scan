@@ -2,6 +2,7 @@ okOrder = [1 2];
 oktaskOrder = [1 2];
 okuse_eye = [0 1];
 okscan = [0 1];
+okch = [0 1];
 
 subjectID = input('Enter Subject ID: ','s');
 while isempty(subjectID)
@@ -49,28 +50,46 @@ subkbid=getKeyboards;
 triggerkbid=input('Which device index do you want to use for the trigger?: ');
 expkbid=input('Which device index do you want to use for the experimenter?: ');
 
-%ColorDots_practice(subjectID,test_comp,exp_init,use_eye,scan,order)
-%2 runs of food_rating
-for run=1:2
-    %input(['Continue to food rating run ' num2str(run) '?: '])
-    %food_rating(subjectID,run,use_eye);
-end
-%do all the sorting and forming of choice pairs
-sort_ratings(subjectID);
-form_food_choice_pairs(subjectID);
 
- for run=1%:3
-     switch taskorder
-         case 1
-            input(['Continue to food choice run ' num2str(run) '?: '])
-            food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)
-            input(['Continue to ColorDots test run ' num2str(run) '?: '])
-            ColorDots_test(subjectID,test_comp,exp_init,use_eye,scan,run,order,subkbid,expkbid,triggerkbid)
-         case 2
-            input(['Continue to ColorDots test run ' num2str(run) '?: '])
-            ColorDots_test(subjectID,test_comp,exp_init,use_eye,scan,run,order,subkbid,expkbid,triggerkbid)
-            input(['Continue to food choice run ' num2str(run) '?: '])
-            food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)
-     end
- end
- 
+ch_p1=input('Do you want to run DDM part one (outside scanner)? (1=YES, 0=NO): ');
+while isempty(ch_p1) || sum(okch==ch_p1)~=1
+    disp('ERROR: input must be 1 or 0 . Please try again.');
+    ch_p1=input('Do you want to run DDM part one (outside scanner)? (1=YES, 0=NO): ');
+end
+
+if ch_p1==1
+    %2 runs of food_rating
+    for run=1:2
+        input(['Continue to food rating run ' num2str(run) '?: '])
+        food_rating(subjectID,run,use_eye);
+    end
+    %do all the sorting and forming of choice pairs
+    sort_ratings(subjectID);
+    form_food_choice_pairs(subjectID);
+end
+
+
+ch_p2=input('Do you want to run DDM part two (inside scanner)? (1=YES, 0=NO): ');
+while isempty(ch_p2) || sum(okch==ch_p2)~=1
+    disp('ERROR: input must be 1 or 0 . Please try again.');
+    ch_p2=input('Do you want to run DDM part two (inside scanner)? (1=YES, 0=NO): ');
+end
+
+if ch_p2==1
+    input('Continue to ColorDots Practice?: ')
+    ColorDots_practice(subjectID,test_comp,exp_init,use_eye,scan,order) 
+    for run=1:3
+        switch taskorder
+            case 1
+                input(['Continue to food choice run ' num2str(run) '?: '])
+                food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)
+                input(['Continue to ColorDots test run ' num2str(run) '?: '])
+                ColorDots_test(subjectID,test_comp,exp_init,use_eye,scan,run,order,subkbid,expkbid,triggerkbid)
+            case 2
+                input(['Continue to ColorDots test run ' num2str(run) '?: '])
+                ColorDots_test(subjectID,test_comp,exp_init,use_eye,scan,run,order,subkbid,expkbid,triggerkbid)
+                input(['Continue to food choice run ' num2str(run) '?: '])
+                food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)
+        end
+    end
+end

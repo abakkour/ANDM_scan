@@ -322,7 +322,7 @@ EyelinkUpdateDefaults(el);
 
 % Hide the mouse cursor;
 %Screen('HideCursorHelper', w); % done above
-%EyelinkDoTrackerSetup(el);
+EyelinkDoTrackerSetup(el);
 
 % STEP 7.1
 % Do a drift correction at the beginning of each trial

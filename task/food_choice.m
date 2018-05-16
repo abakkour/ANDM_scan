@@ -143,14 +143,14 @@ if scan == 1
     leftstack = '3#';
     rightstack = '4$';
     badresp = 'x';
-    leftname='1';
-    rightname='2';
+    leftbutton='1';
+    rightbutton='2';
 else
     leftstack = 'u';
     rightstack = 'i';
     badresp = 'x';
-    leftname='u';
-    rightname='i';
+    leftbutton='u';
+    rightbutton='i';
 end
 
 %==============================================
@@ -353,8 +353,8 @@ if numRun == 1
     CenterText(w,'On each trial, you will see a food picture on the left',white, 0, -300);
     CenterText(w,'and a different food picture on the right.',white, 0, -250);
     CenterText(w,'For each trial, indicate whether you `Prefer`',white, 0, -200);
-    CenterText(w,['the food on the left by pressing the `' leftname '` key or instead'],white, 0, -150);
-    CenterText(w,['`Prefer` the food on the right by pressing the `' rightname '` key.'],white, 0, -100);
+    CenterText(w,['the food on the left by pressing the `' leftbutton '` key or instead'],white, 0, -150);
+    CenterText(w,['`Prefer` the food on the right by pressing the `' rightbutton '` key.'],white, 0, -100);
     CenterText(w,'You will be asked to eat a snack sized portion',white, 0, -50);
     CenterText(w,'of one of your preferred items, randomly selected at the end of the task.',white, 0, 0);
     CenterText(w,'That is, your choice on one trial, randomly selected,',white, 0, 50);

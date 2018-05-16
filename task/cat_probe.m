@@ -140,14 +140,14 @@ if scan == 1
     leftstack = '3#';
     rightstack = '4$';
     badresp = 'x';
-    leftname='1';
-    rightname='2';
+    leftbutton='1';
+    rightbutton='2';
 else
     leftstack = 'u';
     rightstack = 'i';
     badresp = 'x';
-    leftname='u';
-    rightname='i';
+    leftbutton='u';
+    rightbutton='i';
 end
 
 %==============================================
@@ -322,7 +322,7 @@ EyelinkUpdateDefaults(el);
 
 % Hide the mouse cursor;
 %Screen('HideCursorHelper', w); % done above
-EyelinkDoTrackerSetup(el);
+%EyelinkDoTrackerSetup(el);
 
 % STEP 7.1
 % Do a drift correction at the beginning of each trial
@@ -341,8 +341,8 @@ CenterText(w,'Now you will be asked to choose a food to eat.',white, 0, -350);
 CenterText(w,'On each trial, you will see a food picture on the left',white, 0, -300);
 CenterText(w,'and a different food picture on the right.',white, 0, -250);
 CenterText(w,'For each trial, indicate whether you `Prefer`',white, 0, -200);
-CenterText(w,['the food on the left by pressing the `' leftname '` key or instead'],white, 0, -150);
-CenterText(w,['`Prefer` the food on the right by pressing the `' rightname '` key.'],white, 0, -100);
+CenterText(w,['the food on the left by pressing the `' leftbutton '` key or instead'],white, 0, -150);
+CenterText(w,['`Prefer` the food on the right by pressing the `' rightbutton '` key.'],white, 0, -100);
 CenterText(w,'Remember to imagine that you will be given a snack',white, 0, -50);
 CenterText(w,'after this task and make sure your choices are based',white, 0, 0);
 CenterText(w,'on what you would want to have as a snack.',white, 0, 50);

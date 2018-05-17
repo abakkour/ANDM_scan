@@ -8,11 +8,15 @@ fid=fopen(['../data/' subjid '/' file(length(file)).name]); %tmp(length(tmp)).na
 probe=textscan(fid, '%s %d %d %f %s %s %d %d %d %s %d %d %f %f %f %f', 'Headerlines',1);
 fclose(fid);
 
-subset=ismember(probe{10},{'Cheezits.bmp','CheesyDoritos.bmp','Fritos.bmp','Ruffles.bmp','Oreos.bmp','PeanutMMs.bmp','Chocolate_mm.bmp','Twix.bmp','Snickers.bmp','FamousAmos_small.bmp','PopTartsStrawberry.bmp','FigNewton_small.bmp'})...
-    & ismember(probe{11},{'Cheezits.bmp','CheesyDoritos.bmp','Fritos.bmp','Ruffles.bmp','Oreos.bmp','PeanutMMs.bmp','Chocolate_mm.bmp','Twix.bmp','Snickers.bmp','FamousAmos_small.bmp','PopTartsStrawberry.bmp','FigNewton_small.bmp'});
-leftpics=probe{10}(subset);
-rightpics=probe{11}(subset);
-responses=probe{13}(subset);
+subset=(ismember(probe{5},{'apple.jpg','bagel_plain.jpg','bagelwithcreamcheese.jpg','blueberries.jpg',...
+    'chocolatechipcookies.jpg','clementines.jpg','cupcakes.jpg','granolabar.jpg','grapes.jpg','minimuffins.jpg',...
+    'pretzelsticks.jpg','raspberries.jpg','reesespieces.jpg','skittles.jpg','strawberries.jpg','turkeysandwich.jpg','yellowpopcorn.jpg'}))...
+    & (ismember(probe{6},{'apple.jpg','bagel_plain.jpg','bagelwithcreamcheese.jpg','blueberries.jpg',...
+    'chocolatechipcookies.jpg','clementines.jpg','cupcakes.jpg','granolabar.jpg','grapes.jpg','minimuffins.jpg',...
+    'pretzelsticks.jpg','raspberries.jpg','reesespieces.jpg','skittles.jpg','strawberries.jpg','turkeysandwich.jpg','yellowpopcorn.jpg'}));
+leftpics=probe{5}(subset);
+rightpics=probe{6}(subset);
+responses=probe{10}(subset);
 validresponse=~strcmp(responses,'x');
 leftpics=leftpics(validresponse);
 rightpics=rightpics(validresponse);
@@ -36,7 +40,7 @@ switch char(response)
         text2=strcat('You chose item ''', rightpic, '''. You receive this item.');
 end
 
-fid=fopen(['../data/' subjid '/' sunjid '_food_choice_resolve.txt'],'a');
+fid=fopen(['../data/' subjid '/' subjid '_food_choice_resolve.txt'],'a');
 fprintf(fid,'%s \n \n %s \n \n', char(text1), char(text2));
 fclose(fid);
 cmd=sprintf('more ../data/%s/%s_food_choice_resolve.txt',subjid,subjid);

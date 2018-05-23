@@ -1,4 +1,4 @@
-function ColorDots_practice(subjid,test_comp,exp_init,eye,scan,button_order)
+function ColorDots_practice(subjid,test_comp,exp_init,eye,scan,button_order,subkbid,expkbid,triggerkbid)
 % This demo shows color dots three times and returns their information.
 %
 % ColorDots_practice(subjid,test_comp,exp_init,eye,scan,button_order)
@@ -48,8 +48,8 @@ red=[255 0 0];
 white=[255 255 255];
 black=[0 0 0];
 
-KbQueueCreate;
-KbQueueStart;
+KbQueueCreate(expkbid);
+KbQueueStart(expkbid);
 HideCursor;
 
 
@@ -67,14 +67,14 @@ switch scan
     case 1
         switch button_order
             case 1
-                blue='1!';
+                blue='3#';
                 bluekey='1';
-                yellow='2@';
+                yellow='4$';
                 yellowkey='2';
             case 2
-                blue='2@';
+                blue='4$';
                 bleukey='2';
-                yellow='1!';
+                yellow='3#';
                 yellowkey='1';
         end
     case 0
@@ -233,7 +233,7 @@ EyelinkDoTrackerSetup(el);
 EyelinkDoDriftCorrection(el);
 
 ListenChar(2);
-KbQueueFlush;
+
 
 %INTRUCTIONS
 Screen('TextSize',win,40);
@@ -247,20 +247,24 @@ CenterText(win,'Rather, try to estimate the rough average.',white,0,0);
 CenterText(win,'Please respond as soon as you have an answer.',white,0,50);
 CenterText(win,'Press any button to continue...',white,0,200);
 Screen('Flip',win);
-KbQueueWait;
 
-KbQueueFlush;
-if scan==1
-    CenterText(win,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a 't' trigger signal from the scanner
-    Screen('Flip',w);
-    escapeKey = KbName('t');
-    while 1
-        [keyIsDown, firstPress] = KbQueueCheck;
-        if keyIsDown && firstPress(escapeKey)
-            break;
-        end
-    end
-end
+KbQueueCreate(subkbid);
+KbQueueStart(subkbid);
+KbQueueFlush(subkbid);
+KbQueueWait(subkbid);
+KbName('UnifyKeyNames');
+
+%if scan==1
+%    CenterText(win,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a 't' trigger signal from the scanner
+%    Screen('Flip',w);
+%    escapeKey = KbName('t');
+%    while 1
+%        [keyIsDown, firstPress] = KbQueueCheck;
+%        if keyIsDown && firstPress(escapeKey)
+%            break;
+%        end
+%    end
+%end
 
 
 CenterText(win,'+',white,0,0);
@@ -348,7 +352,7 @@ for c=1:5
         
         % Dots.init_trial must be called before Dots.draw.
         Dots.init_trial(prop);
-        KbQueueFlush;
+        KbQueueFlush(subkbid);
         
         for fr = 1:n_fr
             % Since the dots should update every frame,
@@ -375,7 +379,7 @@ for c=1:5
                 end
             end
             
-            [keyIsDown, firstPress] = KbQueueCheck;
+            [keyIsDown, firstPress] = KbQueueCheck(subkbid);
             keyPressed=KbName(firstPress);
             if keyIsDown && ischar(keyPressed)==0 % if 2 keys are hit at once, they become a cell, not a char. we need keyPressed to be a char, so this converts it and takes the first key pressed
                 keyPressed=char(keyPressed);
@@ -534,6 +538,7 @@ CenterText(win,'Thank you! Great job!', white,0,-100);
 CenterText(win,'We will continue shortly...', white,0,0);
 Screen('Flip', win);
 WaitSecs(5);
+KbQueueFlush(subkbid);
 
 % Finishing up
 ListenChar(0);

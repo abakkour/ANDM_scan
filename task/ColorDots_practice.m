@@ -25,7 +25,7 @@ function ColorDots_practice(subjid,test_comp,exp_init,eye,scan,button_order)
 
 Screen('Preference', 'VisualDebugLevel', 0);
 %PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
-%Screen('Preference', 'SkipSyncTests', 1); % FOR TESTING PURPOSES ONLY!
+Screen('Preference', 'SkipSyncTests', 1); % FOR TESTING PURPOSES ONLY!
 
 c=clock;
 hr=num2str(c(4));
@@ -100,7 +100,7 @@ Dots = ColorDots( ...
     'dist_cm', 55, ...
     'monitor_width_cm', 30);
 
-n_trial = 200;
+n_trial = 100;
 info = cell(1, n_trial);
 outcomes=zeros(1,n_trial);
 
@@ -478,209 +478,9 @@ for c=1:5
             a=0;
         elseif c==4 && trial >= 40 && nanmean(outcomes(trial-9:trial))>=.8
             a=0;
-        elseif trial>= 200
+        elseif trial>= 100
             a=0;
         end
-        
-        if trial==100
-            CenterText(win,'Great job! Take a break.',white,0,-100);
-            CenterText(win,'Take as long as you need.',white,0,0);
-            CenterText(win,'When you are ready, please get the experimenter...',white,0,100);
-            Screen('Flip', win);
-            switch trial
-                case 100
-                    run=1;
-                case 200
-                    run=2;
-                case 300
-                    run=3;
-            end
-            fclose(fid1);
-            % STEP 7.9
-            % Mark END of run
-            Eyelink('Message', 'END');
-            % adds 100 msec of data to catch final events
-            WaitSecs(0.1);
-            % stop the recording of eye-movements for the current trial
-            Eyelink('StopRecording');
-            
-            % STEP 8
-            % End of Experiment; close the file first
-            % close graphics window, close data file and shut down tracker
-            
-            Eyelink('Command', 'set_idle_mode');
-            WaitSecs(0.5);
-            Eyelink('CloseFile');
-            % download data file
-            try
-                fprintf('Receiving data file ''%s''\n', edfFile );
-                status=Eyelink('ReceiveFile');
-                if status > 0
-                    fprintf('ReceiveFile status %d\n', status);
-                end
-                if 2==exist(edfFile, 'file')
-                    fprintf('Data file ''%s'' can be found in ''%s''\n', edfFile, pwd );
-                end
-            catch
-                fprintf('Problem receiving data file ''%s''\n', edfFile );
-            end
-            % STEP 9
-            % close the eye tracker and window
-            Eyelink('ShutDown');
-            
-            % rename file
-            if dummymode==0
-                movefile(edfFile,['../data/', subjid,'/',subjid,'_dots_practice_run_', num2str(run), '_', timestamp,'.EDF']);
-            end
-            
-            KbQueueFlush;
-            KbQueueWait;
-            
-            
-            % STEP 1
-            % Added a dialog box to set your own EDF file name before opening
-            % experiment graphics. Make sure the entered EDF file name is 1 to 8
-            % characters in length and only numbers or letters are allowed.
-            if IsOctave
-                edfFile = 'dotsp2';
-            else
-                
-                edfFile= 'dotsp2.EDF';
-                fprintf('EDFFile: %s\n', edfFile );
-            end
-            
-            % STEP 2
-            % Open a graphics window on the main screen
-            % using the PsychToolbox's Screen function.
-            % DONE ABOVE
-            
-            % STEP 3
-            % Provide Eyelink with details about the graphics environment
-            % and perform some initializations. The information is returned
-            % in a structure that also contains useful defaults
-            % and control codes (e.g. tracker state bit and Eyelink key values).
-            el=EyelinkInitDefaults(win);
-            
-            % STEP 4
-            % Initialization of the connection with the Eyelink Gazetracker.
-            % exit program if this fails.
-            if ~EyelinkInit(dummymode)
-                fprintf('Eyelink Init aborted.\n');
-                cleanup;  % cleanup function
-                return;
-            end
-            
-            % the following code is used to check the version of the eye tracker
-            % and version of the host software
-            
-            [sw_version, vs]=Eyelink('GetTrackerVersion');
-            fprintf('Running experiment on a ''%s'' tracker.\n', vs );
-            
-            % open file to record data to
-            i = Eyelink('Openfile', edfFile);
-            if i~=0
-                fprintf('Cannot create EDF file ''%s'' ', edffilename);
-                Eyelink( 'Shutdown');
-                Screen('CloseAll');
-                return;
-            end
-            
-            Eyelink('command', 'add_file_preamble_text ''Recorded by EyelinkToolbox DotsTest''');
-            [width, height]=Screen('WindowSize', scr);
-            
-            
-            % STEP 5
-            % SET UP TRACKER CONFIGURATION
-            % Setting the proper recording resolution, proper calibration type,
-            % as well as the data file content;
-            Eyelink('command','screen_pixel_coords = %ld %ld %ld %ld', 0, 0, width-1, height-1);
-            Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', 0, 0, width-1, height-1);
-            % set calibration type.
-            Eyelink('command', 'calibration_type = HV9');
-            % set parser (conservative saccade thresholds)
-            
-            % set EDF file contents using the file_sample_data and
-            % file-event_filter commands
-            % set link data thtough link_sample_data and link_event_filter
-            Eyelink('command', 'file_event_filter = LEFT,RIGHT,FIXATION,SACCADE,BLINK,MESSAGE,BUTTON,INPUT');
-            Eyelink('command', 'link_event_filter = LEFT,RIGHT,FIXATION,SACCADE,BLINK,MESSAGE,BUTTON,INPUT');
-            
-            % check the software version
-            % add "HTARGET" to record possible target data for EyeLink Remote
-            if sw_version >=4
-                Eyelink('command', 'file_sample_data  = LEFT,RIGHT,GAZE,HREF,AREA,HTARGET,GAZERES,STATUS,INPUT');
-                Eyelink('command', 'link_sample_data  = LEFT,RIGHT,GAZE,GAZERES,AREA,HTARGET,STATUS,INPUT');
-            else
-                Eyelink('command', 'file_sample_data  = LEFT,RIGHT,GAZE,HREF,AREA,GAZERES,STATUS,INPUT');
-                Eyelink('command', 'link_sample_data  = LEFT,RIGHT,GAZE,GAZERES,AREA,STATUS,INPUT');
-            end
-            
-            % make sure we're still connected.
-            if Eyelink('IsConnected')~=1 && dummymode == 0
-                fprintf('not connected, clean up\n');
-                Eyelink( 'Shutdown');
-                Screen('CloseAll');
-                return;
-            end
-            
-            % STEP 6
-            % Calibrate the eye tracker
-            % setup the proper calibration foreground and background colors
-            el.backgroundcolour = [128 128 128];
-            el.calibrationtargetcolour = [0 0 0];
-            
-            % parameters are in frequency, volume, and duration
-            % set the second value in each line to 0 to turn off the sound
-            el.cal_target_beep=[600 0.5 0.05];
-            el.drift_correction_target_beep=[600 0.5 0.05];
-            el.calibration_failed_beep=[400 0.5 0.25];
-            el.calibration_success_beep=[800 0.5 0.25];
-            el.drift_correction_failed_beep=[400 0.5 0.25];
-            el.drift_correction_success_beep=[800 0.5 0.25];
-            % you must call this function to apply the changes from above
-            EyelinkUpdateDefaults(el);
-            
-            % Hide the mouse cursor;
-            %Screen('HideCursorHelper', win); % done above
-            EyelinkDoTrackerSetup(el);
-            
-            % STEP 7.1
-            % Do a drift correction at the beginning of each trial
-            % Performing drift correction (checking) is optional for
-            % EyeLink 1000 eye trackers.
-            EyelinkDoDriftCorrection(el);
-            
-            CenterText(win,'Please press any key to continue...',white,0,0);
-            Screen('Flip', win);
-            KbQueueFlush;
-            KbQueueWait;
-            CenterText(win,'+',white,0,0);
-            Screen('Flip', win);
-            
-            fid1=fopen(['../data/' subjid '/' subjid '_dots_practice_run_' num2str(run) '_' timestamp '.txt'], 'a');
-            %write the header line
-            fprintf(fid1,'subjid\t scanner\t test_comp\t experimenter\t runtrial\t onsettime\t color_coh\t prop\t response\t outcome\t disptime\t RT\t button_order\n');
-            
-            % STEP 7.2
-            % Before recording, we place reference graphics on the host display
-            % Must be offline to draw to EyeLink screen
-            Eyelink('Command', 'set_idle_mode');
-            % clear tracker display and draw box at center
-            Eyelink('Command', 'clear_screen 0')
-            Eyelink('command', 'draw_box %d %d %d %d 15', width/2-50, height/2-50, width/2+50, height/2+50);
-            % start recording eye position (preceded by a short pause so that
-            % the tracker can finish the mode transition)
-            % The paramerters for the 'StartRecording' call controls the
-            % file_samples, file_events, link_samples, link_events availability
-            Eyelink('Command', 'set_idle_mode');
-            WaitSecs(0.05);
-            %         Eyelink('StartRecording', 1, 1, 1, 1);
-            Eyelink('StartRecording');
-            % record a few samples before we actually start displaying
-            % otherwise you may lose a few msec of data
-            WaitSecs(1);
-        end
-        
     end
 end
 
@@ -731,7 +531,7 @@ if dummymode==0
 end
 
 CenterText(win,'Thank you! Great job!', white,0,-100);
-CenterText(win,'Please get the experimenter.', white,0,0);
+CenterText(win,'We will continue shortly...', white,0,0);
 Screen('Flip', win);
 WaitSecs(5);
 

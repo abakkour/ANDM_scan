@@ -25,7 +25,7 @@ function ColorDots_practice(subjid,test_comp,exp_init,eye,scan,button_order,subk
 
 Screen('Preference', 'VisualDebugLevel', 0);
 %PsychDebugWindowConfiguration; % for transparency to debug during task on single screen setup
-Screen('Preference', 'SkipSyncTests', 1); % FOR TESTING PURPOSES ONLY!
+%Screen('Preference', 'SkipSyncTests', 1); % FOR TESTING PURPOSES ONLY!
 
 c=clock;
 hr=num2str(c(4));
@@ -73,7 +73,7 @@ switch scan
                 yellowkey='2';
             case 2
                 blue='4$';
-                bleukey='2';
+                bluekey='2';
                 yellow='3#';
                 yellowkey='1';
         end
@@ -385,7 +385,7 @@ for c=1:5
                 keyPressed=char(keyPressed);
                 keyPressed=keyPressed(1);
             end
-            if keyIsDown && (keyPressed == blue || keyPressed == yellow)
+            if keyIsDown && (strcmp(keyPressed,blue) || strcmp(keyPressed,yellow))
                 Eyelink('Message', 'TRIAL_RESULT %s', keyPressed);
                 Eyelink('Message', 'ENDBUTTON');
                 keymsg=sprintf('Trial %d Key %s pressed at %.3f', trial, keyPressed, firstPress(KbName(keyPressed))-t_fr(1));
@@ -422,15 +422,15 @@ for c=1:5
         end
         info{trial}.disptime=t_fr(end) - t_fr(1);
         
-        if color_coh > 0 && keyPressed == blue
-            outcome = 1;
-        elseif color_coh < 0 && keyPressed == yellow
-            outcome = 1;
-        elseif color_coh == 0 && ~keyPressed=='x'
-            outcome = NaN;
-        else
-            outcome = 0;
-        end
+    if color_coh > 0 && strcmp(keyPressed,blue)
+        outcome = 1;
+    elseif color_coh < 0 && strcmp(keyPressed,yellow)
+        outcome = 1;
+    elseif color_coh == 0
+        outcome = NaN;
+    else
+        outcome = 0;
+    end
         
         outcomes(trial)=outcome;
         

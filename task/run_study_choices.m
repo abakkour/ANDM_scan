@@ -77,7 +77,7 @@ end
 
 if ch_p2==1
     input('Continue to ColorDots Practice?: ')
-    ColorDots_practice(subjectID,test_comp,exp_init,use_eye,scan,order) 
+    ColorDots_practice(subjectID,test_comp,exp_init,use_eye,scan,order,subkbid,expkbid) 
     for run=1:3
         switch taskorder
             case 1

@@ -1,4 +1,4 @@
-function ColorDots_practice(subjid,test_comp,exp_init,eye,scan,button_order,subkbid,expkbid,triggerkbid)
+function ColorDots_practice(subjid,test_comp,exp_init,eye,scan,button_order,subkbid,expkbid)
 % This demo shows color dots three times and returns their information.
 %
 % ColorDots_practice(subjid,test_comp,exp_init,eye,scan,button_order)

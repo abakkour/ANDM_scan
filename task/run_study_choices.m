@@ -92,4 +92,6 @@ if ch_p2==1
                 food_choice(subjectID, run, use_eye, scan, subkbid,expkbid,triggerkbid)
         end
     end
+    input('Resolve choice now?: ')
+    resolve_choice(subjectID);
 end

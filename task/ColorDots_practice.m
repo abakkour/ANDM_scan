@@ -35,7 +35,7 @@ timestamp=[date,'_',hr,'h',min,'m'];
 ColorDots_init_path;
 
 % Initialization
-scr = 0;
+scr = max(Screen('Screens'));
 background_color = 0;
 [win, windowRect] = Screen('OpenWindow', scr, background_color);
 [xCenter, yCenter] = RectCenter(windowRect);

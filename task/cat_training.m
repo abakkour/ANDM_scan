@@ -85,7 +85,7 @@ Screen('Preference', 'VisualDebuglevel', 0); %No PTB intro screen
 %Screen('Preference', 'SuppressAllWarnings', 1); %FOR TESTING ONLY
 %Screen('Preference', 'SkipSyncTests', 1); %FOR TESTING ONLY
 
-screennum = max(Screen('Screens'));
+screennum = min(Screen('Screens')); %laptop screen
 
 pixelSize=32;
 [w,windowRect] = Screen('OpenWindow',screennum,[],[],pixelSize);

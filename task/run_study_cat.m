@@ -101,4 +101,5 @@ if cat_p2==1
         input(['Continue to CAT Probe run ' num2str(run) '?: ']);
         cat_probe(subjectID, order, run, use_eye, scan, subkbid,expkbid,triggerkbid);
     end
+    cat_determine_notchosen(subjectID)
 end

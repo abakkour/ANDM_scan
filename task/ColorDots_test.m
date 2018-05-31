@@ -483,6 +483,8 @@ catch
     fprintf('Problem receiving data file ''%s''\n', edfFile );
 end
 
+
+WaitSecs(3.5);
 % STEP 9
 % close the eye tracker and window
 Eyelink('ShutDown');
@@ -500,7 +502,7 @@ else % if this is the last run
     Screen('Flip',win);
 end
 
-WaitSecs(4);
+WaitSecs(3);
 
 KbQueueFlush(subkbid);
 ShowCursor;

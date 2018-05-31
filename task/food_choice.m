@@ -665,7 +665,7 @@ end
 %-----------------------------------------------------------------
 %	display outgoing message
 %-----------------------------------------------------------------
-WaitSecs(3.5);
+
 Screen('TextSize',w, 40);
 
 %---------------------------------------------------------------
@@ -683,7 +683,7 @@ save(outfile);
 
 CenterText(w,sprintf('Great Job!') ,white,0,-100);
 CenterText(w,sprintf('We will continue shortly.') ,white,0,100);
-Screen('Flip',w);
+Screen('Flip', w, StimOnset+6.5);
 
 WaitSecs(3);
 

@@ -52,6 +52,8 @@ if transfer==0
     system(servername)
     system('rsync -avx ~/Desktop/shohamy-labshare/ANDM_scan/data/ ../data/')
 end
+
+cat_form_probe_pairs_followup(subjectID, order, 2); %2 repetitions of each unique choice pair for CAT_probe
 %%2 runs of CAT Probe
 for run=3:4
     input(['Continue to CAT Probe run ' num2str(run) '?: ']);

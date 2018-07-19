@@ -1,11 +1,11 @@
 function cat_determine_notchosen_followup(subjid)
 
-file1=dir(['../data/' subjid '/' subjid '_cat_probe_run1_*m.txt']);
+file1=dir(['../data/' subjid '/' subjid '_cat_probe_run3_*m.txt']);
 fid1=fopen(['../data/' subjid '/' file1(length(file1)).name]); %tmp(length(tmp)).name
 probe1=textscan(fid1, '%s	%d	%d	%d	%f	%s	%s	%d	%d	%d	%s	%d	%d	%f	%f	%f	%f', 'Headerlines',1);
 fclose(fid1);
 
-file2=dir(['../data/' subjid '/' subjid '_cat_probe_run2_*m.txt']);
+file2=dir(['../data/' subjid '/' subjid '_cat_probe_run4_*m.txt']);
 fid2=fopen(['../data/' subjid '/' file2(length(file1)).name]); %tmp(length(tmp)).name
 probe2=textscan(fid1, '%s	%d	%d	%d	%f	%s	%s	%d	%d	%d	%s	%d	%d	%f	%f	%f	%f', 'Headerlines',1);
 fclose(fid2);

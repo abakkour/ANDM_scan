@@ -219,13 +219,13 @@ LV_nobeep = shuffle_LV_nobeep_new;
 
 
 
-for numRun = 1+2:numRuns+2 %runs 3 and 4
+for numRun = 1:numRuns %runs 3 and 4
     HH = 1;
     LL = 1;
     HL_NG = 1;
     HL_G = 1;
     % Create stimuliForProbe.txt for this run
-    fid1 = fopen([outputPath '/' sprintf('%s_stimuliForcatProbe_order%d_run%d.txt',subjectID,order,numRun)], 'w');
+    fid1 = fopen([outputPath '/' sprintf('%s_stimuliForcatProbe_order%d_run%d.txt',subjectID,order,numRun+2)], 'w');
     
     for trial = 1:trialsPerRun % trial num within block      
         switch pairType(numRun,trial)
@@ -306,7 +306,7 @@ end % end for numRun = 1:numRunsPerBlocks
 %---------------------------------------------------------------------
 % create a data structure with info about the run and all the matrices
 %---------------------------------------------------------------------
-outfile = strcat(outputPath,'/', sprintf('%s_stimuliForcatProbe_order%d_%d_trials_%s.mat',subjectID,order,total_num_trials,date));
+outfile = strcat(outputPath,'/', sprintf('%s_stimuliForcatProbe_order%d_%d_trials_%s_followup.mat',subjectID,order,total_num_trials,date));
 
 % create a data structure with info about the run
 run_info.subject = subjectID;

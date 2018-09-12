@@ -252,19 +252,21 @@ KbQueueCreate(subkbid);
 KbQueueStart(subkbid);
 KbQueueFlush(subkbid);
 KbQueueWait(subkbid);
+KbQueueStop(subkbid);
 KbName('UnifyKeyNames');
 
-%if scan==1
-%    CenterText(win,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a 't' trigger signal from the scanner
-%    Screen('Flip',w);
-%    escapeKey = KbName('t');
-%    while 1
-%        [keyIsDown, firstPress] = KbQueueCheck;
-%        if keyIsDown && firstPress(escapeKey)
-%            break;
-%        end
-%    end
-%end
+if scan==1
+    KbQueueCreate(triggerkbid);
+    KbQueueStart(triggerkbid);
+    CenterText(win,'GET READY!', white, 0, 0);    %this is for the MRI scanner, it waits for a '5' trigger signal from the scanner
+    Screen('Flip',win);
+    KbQueueFlush(triggerkbid);
+    KbQueueWait(triggerkbid,KbName('5%'));
+    KbQueueStop(triggerkbid);
+end
+
+KbQueueCreate(subkbid);
+KbQueueStart(subkbid);
 
 
 CenterText(win,'+',white,0,0);

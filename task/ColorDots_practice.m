@@ -254,7 +254,7 @@ KbQueueFlush(subkbid);
 KbQueueWait(subkbid);
 KbQueueStop(subkbid);
 KbName('UnifyKeyNames');
-
+triggerkbid=subkbid;
 if scan==1
     KbQueueCreate(triggerkbid);
     KbQueueStart(triggerkbid);
